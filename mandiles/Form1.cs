@@ -15,6 +15,8 @@ namespace mandiles
 
         Dictionary<string, Label> cajas = new Dictionary<string, Label>();
         Dictionary<string, List<Label>> asignacionLabels = new Dictionary<string, List<Label>>();
+        Dictionary<Label, List<string>> asignaciones = new Dictionary<Label, List<string>>();
+
 
 
         public Form1()
@@ -195,6 +197,26 @@ namespace mandiles
 
             // Mueve la caja de regreso a comboBox1
             MoverCaja(comboBox2, comboBox1, selectedCaja);
+
+            Label cajaCerrada = cajas[selectedCaja];
+
+            // 4) Si en el diccionario 'asignaciones' existe esta caja, saca a sus empacadores
+            if (asignaciones.ContainsKey(cajaCerrada))
+            {
+                // Lista temporal con los empacadores que se quedan sin caja
+                List<string> empacadoresSinCaja = new List<string>(asignaciones[cajaCerrada]);
+
+                // Limpia la lista de esa caja en el diccionario
+                asignaciones[cajaCerrada].Clear();
+
+                // 5) Actualiza la interfaz para que se borre el nombre (por ejemplo, "pepe")
+                ActualizarAsignaciones(asignaciones);
+
+                // 6) (Opcional) Reasignar automáticamente a los empacadoresSinCaja
+                //    Si NO quieres reasignar de inmediato, puedes omitir esta parte.
+                ReasignarEmpacadores(empacadoresSinCaja);
+            }
+
         }
 
         private void CambiarColorCaja(string caja, Color color)
@@ -204,6 +226,7 @@ namespace mandiles
                 cajas[caja].BackColor = color;
             }
         }
+
 
         
 
@@ -239,6 +262,53 @@ namespace mandiles
             Form2 form2 = new Form2(this);
             form2.Show();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+          
+        }
+
+        private void ReasignarEmpacadores(List<string> empacadoresSinCaja)
+        {
+            // 1) Buscar las cajas que aún están abiertas (BackColor == Color.Green)
+            var cajasAbiertas = asignaciones
+                .Where(kvp => kvp.Key.BackColor == Color.Green)
+                .Select(kvp => kvp.Key)
+                .ToList();
+
+            if (cajasAbiertas.Count == 0)
+            {
+                MessageBox.Show("No hay cajas abiertas para reasignar empacadores.");
+                return;
+            }
+
+            // 2) Mezclar los empacadores para asignarlos aleatoriamente
+            Random rng = new Random();
+            empacadoresSinCaja = empacadoresSinCaja.OrderBy(x => rng.Next()).ToList();
+
+            // 3) Asignar cada empacador a una caja abierta que tenga menos de 3
+            foreach (var emp in empacadoresSinCaja)
+            {
+                var cajasConEspacio = cajasAbiertas
+                    .Where(caja => asignaciones[caja].Count < 3)
+                    .ToList();
+
+                if (cajasConEspacio.Count == 0)
+                {
+                    MessageBox.Show($"No se pudo reasignar al empacador '{emp}': todas las cajas abiertas están llenas.");
+                    continue;
+                }
+
+                // Elige una caja al azar
+                Label cajaElegida = cajasConEspacio[rng.Next(cajasConEspacio.Count)];
+                asignaciones[cajaElegida].Add(emp);
+            }
+
+            // 4) Actualizar la interfaz
+            ActualizarAsignaciones(asignaciones);
+            MessageBox.Show("Reasignación completada.");
+        }
+
     }
-    
+
 }

@@ -96,6 +96,9 @@
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -270,8 +273,10 @@
             // label17
             // 
             this.label17.AutoSize = true;
+            this.label17.BackColor = System.Drawing.SystemColors.Info;
             this.label17.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(68, 99);
+            this.label17.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label17.Location = new System.Drawing.Point(66, 147);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(0, 15);
             this.label17.TabIndex = 17;
@@ -279,7 +284,9 @@
             // label18
             // 
             this.label18.AutoSize = true;
+            this.label18.BackColor = System.Drawing.SystemColors.Info;
             this.label18.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label18.Location = new System.Drawing.Point(66, 123);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(41, 15);
@@ -289,8 +296,10 @@
             // label19
             // 
             this.label19.AutoSize = true;
+            this.label19.BackColor = System.Drawing.SystemColors.Info;
             this.label19.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(66, 147);
+            this.label19.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label19.Location = new System.Drawing.Point(66, 99);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(41, 15);
             this.label19.TabIndex = 19;
@@ -299,8 +308,10 @@
             // label20
             // 
             this.label20.AutoSize = true;
+            this.label20.BackColor = System.Drawing.SystemColors.Info;
             this.label20.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(208, 147);
+            this.label20.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label20.Location = new System.Drawing.Point(208, 99);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(43, 15);
             this.label20.TabIndex = 22;
@@ -309,7 +320,9 @@
             // label21
             // 
             this.label21.AutoSize = true;
+            this.label21.BackColor = System.Drawing.SystemColors.Info;
             this.label21.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label21.Location = new System.Drawing.Point(208, 123);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(41, 15);
@@ -319,8 +332,10 @@
             // label22
             // 
             this.label22.AutoSize = true;
+            this.label22.BackColor = System.Drawing.SystemColors.Info;
             this.label22.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(208, 99);
+            this.label22.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label22.Location = new System.Drawing.Point(206, 147);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(43, 15);
             this.label22.TabIndex = 20;
@@ -329,8 +344,10 @@
             // label23
             // 
             this.label23.AutoSize = true;
+            this.label23.BackColor = System.Drawing.SystemColors.Info;
             this.label23.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(356, 147);
+            this.label23.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label23.Location = new System.Drawing.Point(356, 99);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(43, 15);
             this.label23.TabIndex = 25;
@@ -339,7 +356,9 @@
             // label24
             // 
             this.label24.AutoSize = true;
+            this.label24.BackColor = System.Drawing.SystemColors.Info;
             this.label24.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label24.Location = new System.Drawing.Point(356, 123);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(43, 15);
@@ -349,8 +368,10 @@
             // label25
             // 
             this.label25.AutoSize = true;
+            this.label25.BackColor = System.Drawing.SystemColors.Info;
             this.label25.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(356, 99);
+            this.label25.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label25.Location = new System.Drawing.Point(356, 147);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(43, 15);
             this.label25.TabIndex = 23;
@@ -359,324 +380,402 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(494, 147);
+            this.label26.BackColor = System.Drawing.SystemColors.Info;
+            this.label26.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label26.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label26.Location = new System.Drawing.Point(494, 99);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(41, 13);
+            this.label26.Size = new System.Drawing.Size(43, 15);
             this.label26.TabIndex = 28;
             this.label26.Text = "label26";
             // 
             // label27
             // 
             this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.SystemColors.Info;
+            this.label27.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label27.Location = new System.Drawing.Point(494, 123);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(41, 13);
+            this.label27.Size = new System.Drawing.Size(41, 15);
             this.label27.TabIndex = 27;
             this.label27.Text = "label27";
             // 
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(494, 99);
+            this.label28.BackColor = System.Drawing.SystemColors.Info;
+            this.label28.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label28.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label28.Location = new System.Drawing.Point(494, 147);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(41, 13);
+            this.label28.Size = new System.Drawing.Size(43, 15);
             this.label28.TabIndex = 26;
             this.label28.Text = "label28";
             // 
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(643, 147);
+            this.label29.BackColor = System.Drawing.SystemColors.Info;
+            this.label29.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label29.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label29.Location = new System.Drawing.Point(645, 99);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(41, 13);
+            this.label29.Size = new System.Drawing.Size(43, 15);
             this.label29.TabIndex = 31;
             this.label29.Text = "label29";
             // 
             // label30
             // 
             this.label30.AutoSize = true;
+            this.label30.BackColor = System.Drawing.SystemColors.Info;
+            this.label30.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label30.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label30.Location = new System.Drawing.Point(643, 123);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(41, 13);
+            this.label30.Size = new System.Drawing.Size(43, 15);
             this.label30.TabIndex = 30;
             this.label30.Text = "label30";
             // 
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(643, 99);
+            this.label31.BackColor = System.Drawing.SystemColors.Info;
+            this.label31.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label31.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label31.Location = new System.Drawing.Point(645, 147);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(41, 13);
+            this.label31.Size = new System.Drawing.Size(41, 15);
             this.label31.TabIndex = 29;
             this.label31.Text = "label31";
             // 
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(66, 253);
+            this.label32.BackColor = System.Drawing.SystemColors.Info;
+            this.label32.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label32.Location = new System.Drawing.Point(66, 205);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(41, 13);
+            this.label32.Size = new System.Drawing.Size(43, 15);
             this.label32.TabIndex = 34;
             this.label32.Text = "label32";
             // 
             // label33
             // 
             this.label33.AutoSize = true;
+            this.label33.BackColor = System.Drawing.SystemColors.Info;
+            this.label33.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label33.Location = new System.Drawing.Point(66, 229);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(41, 13);
+            this.label33.Size = new System.Drawing.Size(43, 15);
             this.label33.TabIndex = 33;
             this.label33.Text = "label33";
             // 
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(66, 205);
+            this.label34.BackColor = System.Drawing.SystemColors.Info;
+            this.label34.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label34.Location = new System.Drawing.Point(66, 253);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(41, 13);
+            this.label34.Size = new System.Drawing.Size(43, 15);
             this.label34.TabIndex = 32;
             this.label34.Text = "label34";
             // 
             // label35
             // 
             this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(208, 253);
+            this.label35.BackColor = System.Drawing.SystemColors.Info;
+            this.label35.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label35.Location = new System.Drawing.Point(210, 205);
             this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(41, 13);
+            this.label35.Size = new System.Drawing.Size(43, 15);
             this.label35.TabIndex = 37;
             this.label35.Text = "label35";
             // 
             // label36
             // 
             this.label36.AutoSize = true;
+            this.label36.BackColor = System.Drawing.SystemColors.Info;
+            this.label36.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label36.Location = new System.Drawing.Point(208, 229);
             this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(41, 13);
+            this.label36.Size = new System.Drawing.Size(43, 15);
             this.label36.TabIndex = 36;
             this.label36.Text = "label36";
             // 
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(208, 205);
+            this.label37.BackColor = System.Drawing.SystemColors.Info;
+            this.label37.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label37.Location = new System.Drawing.Point(210, 253);
             this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(41, 13);
+            this.label37.Size = new System.Drawing.Size(41, 15);
             this.label37.TabIndex = 35;
             this.label37.Text = "label37";
             // 
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(356, 253);
+            this.label38.BackColor = System.Drawing.SystemColors.Info;
+            this.label38.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label38.Location = new System.Drawing.Point(356, 205);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(41, 13);
+            this.label38.Size = new System.Drawing.Size(43, 15);
             this.label38.TabIndex = 40;
             this.label38.Text = "label38";
             // 
             // label39
             // 
             this.label39.AutoSize = true;
+            this.label39.BackColor = System.Drawing.SystemColors.Info;
+            this.label39.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label39.Location = new System.Drawing.Point(356, 229);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(41, 13);
+            this.label39.Size = new System.Drawing.Size(43, 15);
             this.label39.TabIndex = 39;
             this.label39.Text = "label39";
             // 
             // label40
             // 
             this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(356, 205);
+            this.label40.BackColor = System.Drawing.SystemColors.Info;
+            this.label40.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label40.Location = new System.Drawing.Point(354, 253);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(41, 13);
+            this.label40.Size = new System.Drawing.Size(43, 15);
             this.label40.TabIndex = 38;
             this.label40.Text = "label40";
             // 
             // label41
             // 
             this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(494, 253);
+            this.label41.BackColor = System.Drawing.SystemColors.Info;
+            this.label41.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label41.Location = new System.Drawing.Point(494, 205);
             this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(41, 13);
+            this.label41.Size = new System.Drawing.Size(41, 15);
             this.label41.TabIndex = 43;
             this.label41.Text = "label41";
             // 
             // label42
             // 
             this.label42.AutoSize = true;
+            this.label42.BackColor = System.Drawing.SystemColors.Info;
+            this.label42.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label42.Location = new System.Drawing.Point(494, 229);
             this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(41, 13);
+            this.label42.Size = new System.Drawing.Size(43, 15);
             this.label42.TabIndex = 42;
             this.label42.Text = "label42";
             // 
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(494, 205);
+            this.label43.BackColor = System.Drawing.SystemColors.Info;
+            this.label43.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label43.Location = new System.Drawing.Point(492, 253);
             this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(41, 13);
+            this.label43.Size = new System.Drawing.Size(43, 15);
             this.label43.TabIndex = 41;
             this.label43.Text = "label43";
             // 
             // label44
             // 
             this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(643, 253);
+            this.label44.BackColor = System.Drawing.SystemColors.Info;
+            this.label44.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label44.Location = new System.Drawing.Point(641, 205);
             this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(41, 13);
+            this.label44.Size = new System.Drawing.Size(43, 15);
             this.label44.TabIndex = 46;
             this.label44.Text = "label44";
             // 
             // label45
             // 
             this.label45.AutoSize = true;
+            this.label45.BackColor = System.Drawing.SystemColors.Info;
+            this.label45.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label45.Location = new System.Drawing.Point(643, 229);
             this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(41, 13);
+            this.label45.Size = new System.Drawing.Size(43, 15);
             this.label45.TabIndex = 45;
             this.label45.Text = "label45";
             // 
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(643, 205);
+            this.label46.BackColor = System.Drawing.SystemColors.Info;
+            this.label46.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label46.Location = new System.Drawing.Point(641, 253);
             this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(41, 13);
+            this.label46.Size = new System.Drawing.Size(43, 15);
             this.label46.TabIndex = 44;
             this.label46.Text = "label46";
             // 
             // label47
             // 
             this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(66, 360);
+            this.label47.BackColor = System.Drawing.SystemColors.Info;
+            this.label47.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label47.Location = new System.Drawing.Point(66, 312);
             this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(41, 13);
+            this.label47.Size = new System.Drawing.Size(41, 15);
             this.label47.TabIndex = 49;
             this.label47.Text = "label47";
             // 
             // label48
             // 
             this.label48.AutoSize = true;
+            this.label48.BackColor = System.Drawing.SystemColors.Info;
+            this.label48.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label48.Location = new System.Drawing.Point(66, 336);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(41, 13);
+            this.label48.Size = new System.Drawing.Size(43, 15);
             this.label48.TabIndex = 48;
             this.label48.Text = "label48";
             // 
             // label49
             // 
             this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(66, 312);
+            this.label49.BackColor = System.Drawing.SystemColors.Info;
+            this.label49.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label49.Location = new System.Drawing.Point(66, 358);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(41, 13);
+            this.label49.Size = new System.Drawing.Size(43, 15);
             this.label49.TabIndex = 47;
             this.label49.Text = "label49";
             // 
             // label50
             // 
             this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(208, 360);
+            this.label50.BackColor = System.Drawing.SystemColors.Info;
+            this.label50.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label50.Location = new System.Drawing.Point(206, 314);
             this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(41, 13);
+            this.label50.Size = new System.Drawing.Size(43, 15);
             this.label50.TabIndex = 52;
             this.label50.Text = "label50";
             // 
             // label51
             // 
             this.label51.AutoSize = true;
+            this.label51.BackColor = System.Drawing.SystemColors.Info;
+            this.label51.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label51.Location = new System.Drawing.Point(208, 336);
             this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(41, 13);
+            this.label51.Size = new System.Drawing.Size(41, 15);
             this.label51.TabIndex = 51;
             this.label51.Text = "label51";
             // 
             // label52
             // 
             this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(208, 312);
+            this.label52.BackColor = System.Drawing.SystemColors.Info;
+            this.label52.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label52.Location = new System.Drawing.Point(206, 360);
             this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(41, 13);
+            this.label52.Size = new System.Drawing.Size(43, 15);
             this.label52.TabIndex = 50;
             this.label52.Text = "label52";
             // 
             // label53
             // 
             this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(356, 360);
+            this.label53.BackColor = System.Drawing.SystemColors.Info;
+            this.label53.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label53.Location = new System.Drawing.Point(354, 312);
             this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(41, 13);
+            this.label53.Size = new System.Drawing.Size(43, 15);
             this.label53.TabIndex = 55;
             this.label53.Text = "label53";
             // 
             // label54
             // 
             this.label54.AutoSize = true;
+            this.label54.BackColor = System.Drawing.SystemColors.Info;
+            this.label54.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label54.Location = new System.Drawing.Point(356, 336);
             this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(41, 13);
+            this.label54.Size = new System.Drawing.Size(43, 15);
             this.label54.TabIndex = 54;
             this.label54.Text = "label54";
             // 
             // label55
             // 
             this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(356, 312);
+            this.label55.BackColor = System.Drawing.SystemColors.Info;
+            this.label55.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label55.Location = new System.Drawing.Point(356, 360);
             this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(41, 13);
+            this.label55.Size = new System.Drawing.Size(43, 15);
             this.label55.TabIndex = 53;
             this.label55.Text = "label55";
             // 
             // label56
             // 
             this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(494, 360);
+            this.label56.BackColor = System.Drawing.SystemColors.Info;
+            this.label56.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label56.Location = new System.Drawing.Point(492, 314);
             this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(41, 13);
+            this.label56.Size = new System.Drawing.Size(43, 15);
             this.label56.TabIndex = 58;
             this.label56.Text = "label56";
             // 
             // label57
             // 
             this.label57.AutoSize = true;
+            this.label57.BackColor = System.Drawing.SystemColors.Info;
+            this.label57.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label57.Location = new System.Drawing.Point(494, 336);
             this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(41, 13);
+            this.label57.Size = new System.Drawing.Size(41, 15);
             this.label57.TabIndex = 57;
             this.label57.Text = "label57";
             // 
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(494, 312);
+            this.label58.BackColor = System.Drawing.SystemColors.Info;
+            this.label58.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label58.Location = new System.Drawing.Point(492, 360);
             this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(41, 13);
+            this.label58.Size = new System.Drawing.Size(43, 15);
             this.label58.TabIndex = 56;
             this.label58.Text = "label58";
             // 
             // label59
             // 
             this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(643, 360);
+            this.label59.BackColor = System.Drawing.SystemColors.Info;
+            this.label59.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label59.Location = new System.Drawing.Point(641, 314);
             this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(41, 13);
+            this.label59.Size = new System.Drawing.Size(43, 15);
             this.label59.TabIndex = 61;
             this.label59.Text = "label59";
             // 
             // label60
             // 
             this.label60.AutoSize = true;
+            this.label60.BackColor = System.Drawing.SystemColors.Info;
+            this.label60.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label60.Location = new System.Drawing.Point(643, 336);
             this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(41, 13);
+            this.label60.Size = new System.Drawing.Size(43, 15);
             this.label60.TabIndex = 60;
             this.label60.Text = "label60";
             // 
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(643, 312);
+            this.label61.BackColor = System.Drawing.SystemColors.Info;
+            this.label61.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label61.Location = new System.Drawing.Point(643, 358);
             this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(41, 13);
+            this.label61.Size = new System.Drawing.Size(41, 15);
             this.label61.TabIndex = 59;
             this.label61.Text = "label61";
             // 
@@ -739,11 +838,43 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(0, 0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 68;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(0, 0);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 69;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Font = new System.Drawing.Font("Daydream", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(527, 395);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(199, 30);
+            this.button4.TabIndex = 70;
+            this.button4.Text = "REASIGNACION";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox3);
@@ -889,6 +1020,9 @@
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
     }
 }
 

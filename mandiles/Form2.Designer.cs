@@ -68,10 +68,10 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(81, 106);
+            this.label3.Font = new System.Drawing.Font("Play Pretend", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(62, 106);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(137, 13);
+            this.label3.Size = new System.Drawing.Size(175, 11);
             this.label3.TabIndex = 4;
             this.label3.Text = "Nombre del empacador";
             // 
@@ -97,7 +97,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Daydream", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(329, 269);
+            this.button1.Location = new System.Drawing.Point(319, 256);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(263, 26);
             this.button1.TabIndex = 7;

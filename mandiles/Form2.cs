@@ -62,7 +62,7 @@ namespace mandiles
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            // Obtener la instancia de Form1
+            // 1) Obtener la instancia de Form1
             Form1 form1 = Application.OpenForms["Form1"] as Form1;
             if (form1 == null)
             {
@@ -70,7 +70,7 @@ namespace mandiles
                 return;
             }
 
-            // Obtener las cajas abiertas en Form1 (por ejemplo, aquellas con BackColor == Color.Green)
+            // 2) Obtener las cajas abiertas (BackColor == Green)
             List<Label> cajasAbiertas = form1.ObtenerCajasAbiertas();
             if (cajasAbiertas.Count == 0)
             {
@@ -78,52 +78,63 @@ namespace mandiles
                 return;
             }
 
-            // Mezclar aleatoriamente la lista de empacadores
+            // 3) Mezclar la lista de empacadores
             Random rng = new Random();
             List<string> empacadoresMezclados = empacadores.OrderBy(x => rng.Next()).ToList();
 
-            // Creamos un diccionario para guardar las asignaciones:
-            // clave: Label de la caja; valor: lista de empacadores asignados.
+            // 4) Mezclar también la lista de cajas (para que la distribución sea aleatoria)
+            List<Label> cajasBarajadas = cajasAbiertas.OrderBy(x => rng.Next()).ToList();
+
+            // 5) Calcular la asignación equilibrada
+            int totalEmpacadores = empacadoresMezclados.Count;
+            int totalCajas = cajasBarajadas.Count;
+
+            // Cantidad base por caja
+            int baseCount = totalEmpacadores / totalCajas;
+            // Cuántos "sobran" para dar 1 extra a algunas cajas
+            int remainder = totalEmpacadores % totalCajas;
+
+            // Diccionario: clave = Label de la caja, valor = lista de empacadores asignados
             Dictionary<Label, List<string>> asignaciones = new Dictionary<Label, List<string>>();
-            foreach (Label caja in cajasAbiertas)
+            foreach (var caja in cajasBarajadas)
             {
                 asignaciones[caja] = new List<string>();
             }
 
-            // Distribución round-robin (o de la forma que prefieras)
-            int countBoxes = cajasAbiertas.Count;
-            int index = 0;
-            foreach (string emp in empacadoresMezclados)
+            // 6) Asignar la base a cada caja
+            int currentIndex = 0;
+            foreach (var caja in cajasBarajadas)
             {
-                bool asignado = false;
-                for (int j = 0; j < countBoxes; j++)
+                for (int i = 0; i < baseCount; i++)
                 {
-                    int candidateIndex = (index + j) % countBoxes;
-                    Label candidateBox = cajasAbiertas[candidateIndex];
-                    if (asignaciones[candidateBox].Count < 3)
+                    if (currentIndex < empacadoresMezclados.Count)
                     {
-                        asignaciones[candidateBox].Add(emp);
-                        asignado = true;
-                        index = (candidateIndex + 1) % countBoxes;
-                        break;
+                        asignaciones[caja].Add(empacadoresMezclados[currentIndex]);
+                        currentIndex++;
                     }
-                }
-                if (!asignado)
-                {
-                    MessageBox.Show($"No se pudo asignar al empacador {emp}: todas las cajas abiertas tienen 3 empacadores.");
                 }
             }
 
-            // Actualizar en Form1 los labels de asignación
+            // 7) Repartir los "sobrantes" en las primeras 'remainder' cajas
+            for (int i = 0; i < remainder; i++)
+            {
+                if (currentIndex < empacadoresMezclados.Count)
+                {
+                    asignaciones[cajasBarajadas[i]].Add(empacadoresMezclados[currentIndex]);
+                    currentIndex++;
+                }
+            }
+
+            // 8) Actualizar en Form1 los labels de asignación
             form1.ActualizarAsignaciones(asignaciones);
 
-            // Opcional: mostrar resumen en un MessageBox
+            // 9) Mostrar resumen en un MessageBox (opcional)
             string mensaje = "";
             foreach (var kvp in asignaciones)
             {
                 string cajaName = kvp.Key.Text;
                 string listaEmp = string.Join(", ", kvp.Value);
-                mensaje += $"Caja {cajaName}: {listaEmp}\n";
+                mensaje += $"{cajaName}: {listaEmp}\n";
             }
             MessageBox.Show(mensaje, "Asignación de Empacadores");
         }
