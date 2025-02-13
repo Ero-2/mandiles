@@ -59,9 +59,9 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(29, 122);
+            this.textBox1.Location = new System.Drawing.Point(3, 101);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(239, 20);
+            this.textBox1.Size = new System.Drawing.Size(263, 20);
             this.textBox1.TabIndex = 3;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -69,7 +69,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Play Pretend", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(62, 106);
+            this.label3.Location = new System.Drawing.Point(46, 85);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(175, 11);
             this.label3.TabIndex = 4;
@@ -78,7 +78,7 @@
             // AgregarEmpacador
             // 
             this.AgregarEmpacador.Font = new System.Drawing.Font("Daydream", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AgregarEmpacador.Location = new System.Drawing.Point(19, 167);
+            this.AgregarEmpacador.Location = new System.Drawing.Point(3, 146);
             this.AgregarEmpacador.Name = "AgregarEmpacador";
             this.AgregarEmpacador.Size = new System.Drawing.Size(263, 26);
             this.AgregarEmpacador.TabIndex = 5;
@@ -89,17 +89,17 @@
             // ListaEmpacadores
             // 
             this.ListaEmpacadores.FormattingEnabled = true;
-            this.ListaEmpacadores.Location = new System.Drawing.Point(349, 106);
+            this.ListaEmpacadores.Location = new System.Drawing.Point(377, 76);
             this.ListaEmpacadores.Name = "ListaEmpacadores";
-            this.ListaEmpacadores.Size = new System.Drawing.Size(212, 134);
+            this.ListaEmpacadores.Size = new System.Drawing.Size(276, 134);
             this.ListaEmpacadores.TabIndex = 6;
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Daydream", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(319, 256);
+            this.button1.Location = new System.Drawing.Point(377, 225);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(263, 26);
+            this.button1.Size = new System.Drawing.Size(276, 27);
             this.button1.TabIndex = 7;
             this.button1.Text = "ASIGNAR";
             this.button1.UseVisualStyleBackColor = true;

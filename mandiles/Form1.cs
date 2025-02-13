@@ -13,59 +13,41 @@ namespace mandiles
     public partial class Form1 : Form
     {
 
-        Dictionary<string, Label> cajas = new Dictionary<string, Label>();
-        Dictionary<string, List<Label>> asignacionLabels = new Dictionary<string, List<Label>>();
-        Dictionary<Label, List<string>> asignaciones = new Dictionary<Label, List<string>>();
+        private Dictionary<string, Label> cajas = new Dictionary<string, Label>();
+        private Dictionary<string, List<Label>> asignacionLabels = new Dictionary<string, List<Label>>();
+        private Dictionary<Label, List<string>> asignaciones = new Dictionary<Label, List<string>>();
+        private Dictionary<string, Caja> cajass = new Dictionary<string, Caja>();
 
 
 
         public Form1()
         {
             InitializeComponent();
-            InicializarDiccionario();
+            InicializarDiccionarios();
             InicializarComboBox();
-            InicializarAsignacionLabels();
 
         }
 
-      
-        private void InicializarDiccionario()
+
+        private void InicializarDiccionarios()
         {
-            cajas["Caja 1"] = caja1;
-            cajas["Caja 2"] = caja2;
-            cajas["Caja 3"] = caja3;
-            cajas["Caja 4"] = caja4;
-            cajas["Caja 5"] = caja5;
-            cajas["Caja 6"] = caja6;
-            cajas["Caja 7"] = caja7;
-            cajas["Caja 8"] = caja8;
-            cajas["Caja 9"] = caja9;
-            cajas["Caja 10"] = caja10;
-            cajas["Caja 11"] = caja11;
-            cajas["Caja 12"] = caja12;
-            cajas["Caja 13"] = caja13;
-            cajas["Caja 14"] = caja14;
-            cajas["Caja 15"] = caja15;
+            for (int i = 1; i <= 15; i++)
+            {
+                string cajaName = $"Caja {i}";
+                Label cajaLabel = Controls.Find($"caja{i}", true).FirstOrDefault() as Label;
+                cajas[cajaName] = cajaLabel;
+                asignacionLabels[cajaName] = new List<Label>
+                {
+                    Controls.Find($"label{(i - 1) * 3 + 17}", true).FirstOrDefault() as Label,
+                    Controls.Find($"label{(i - 1) * 3 + 18}", true).FirstOrDefault() as Label,
+                    Controls.Find($"label{(i - 1) * 3 + 19}", true).FirstOrDefault() as Label
+                };
+                cajass[cajaName] = new Caja(cajaName, cajaLabel, asignacionLabels[cajaName]);
 
+
+            }
         }
-        private void InicializarAsignacionLabels()
-        {
-            asignacionLabels["Caja 1"] = new List<Label> { label17, label18, label19 };
-            asignacionLabels["Caja 2"] = new List<Label> { label20, label21, label22 };
-            asignacionLabels["Caja 3"] = new List<Label> { label23, label24, label25 };
-            asignacionLabels["Caja 4"] = new List<Label> { label26, label27, label28 };
-            asignacionLabels["Caja 5"] = new List<Label> { label29, label30, label31 };
-            asignacionLabels["Caja 6"] = new List<Label> { label32, label33, label34 };
-            asignacionLabels["Caja 7"] = new List<Label> { label35, label36, label37 };
-            asignacionLabels["Caja 8"] = new List<Label> { label38, label39, label40 };
-            asignacionLabels["Caja 9"] = new List<Label> { label41, label42, label43 };
-            asignacionLabels["Caja 10"] = new List<Label> { label44, label45, label46 };
-            asignacionLabels["Caja 11"] = new List<Label> { label47, label48, label49 };
-            asignacionLabels["Caja 12"] = new List<Label> { label50, label51, label52 };
-            asignacionLabels["Caja 13"] = new List<Label> { label53, label54, label55 };
-            asignacionLabels["Caja 14"] = new List<Label> { label56, label57, label58 };
-            asignacionLabels["Caja 15"] = new List<Label> { label59, label60, label61 };
-        }
+
         private void InicializarComboBox()
         {
             for (int i = 1; i <= 15; i++)
@@ -79,6 +61,74 @@ namespace mandiles
             comboBox3.SelectedIndexChanged += comboBox3_SelectedIndexChanged;
         }
 
+        private void CambiarColorCaja(string cajaName, Color color)
+        {
+            if (cajas.ContainsKey(cajaName))
+                cajas[cajaName].BackColor = color;
+        }
+
+        private void OpenCaja(string nombreCaja)
+        {
+            if (!cajass.ContainsKey(nombreCaja)) return;
+            Caja caja = cajass[nombreCaja];
+            caja.IsOpen = true;
+            caja.MainLabel.BackColor = Color.Green;
+            caja.UpdateUI();
+        }
+
+        private void CloseCaja(string nombreCaja)
+        {
+            if (!cajass.ContainsKey(nombreCaja)) return;
+            Caja cajaCerrada = cajass[nombreCaja];
+
+            // Tomamos los empacadores de la caja y los quitamos de ahí
+            List<string> empacadoresAReasignar = new List<string>(cajaCerrada.Empacadores);
+            cajaCerrada.Empacadores.Clear();
+
+            // Marcamos la caja como cerrada
+            cajaCerrada.IsOpen = false;
+            cajaCerrada.MainLabel.BackColor = Color.Transparent;
+            cajaCerrada.UpdateUI();
+
+            // REASIGNAMOS (solo una vez)
+            ReasignarEmpacadores(empacadoresAReasignar);
+        }
+
+        private void ReasignarEmpacadores(List<string> empacadores)
+        {
+            var openCajas = cajass.Values.Where(c => c.IsOpen).OrderBy(c => c.Empacadores.Count).ToList();
+            foreach (var emp in empacadores)
+            {
+                foreach (var caja in openCajas)
+                {
+                    if (caja.Empacadores.Count < 3)
+                    {
+                        caja.Empacadores.Add(emp);
+
+                        // Cambiar color del empacador reasignado
+                        Label labelEmpacador = caja.AsignacionLabels.FirstOrDefault(l => string.IsNullOrEmpty(l.Text));
+                        if (labelEmpacador != null)
+                        {
+                            labelEmpacador.Text = emp;
+                            labelEmpacador.ForeColor = Color.Red; // Color para identificar que fue movido
+
+                            // Opcional: Restaurar color después de unos segundos
+                            Task.Delay(3000).ContinueWith(_ => this.Invoke((Action)(() => labelEmpacador.ForeColor = Color.Black)));
+                        }
+                        break;
+                    }
+                }
+            }
+
+            foreach (var caja in openCajas)
+            {
+                caja.UpdateUI();
+            }
+        }
+
+
+        
+
         private void MoverCaja(ComboBox origen, ComboBox destino, string caja)
         {
             if (!destino.Items.Contains(caja))
@@ -86,22 +136,20 @@ namespace mandiles
                 destino.Items.Add(caja);
             }
 
-            // Después, removemos el elemento de la lista original
             if (origen.Items.Contains(caja))
             {
-                origen.Items.Remove(caja);
+                origen.Items.Remove(caja); // Solo una vez
             }
 
-            // Actualizar visualmente los ComboBox
-            origen.Items.Remove(caja);
             origen.Refresh();
             destino.Refresh();
 
         }
 
-        public void ActualizarAsignaciones(Dictionary<Label, List<string>> asignaciones)
+        public void ActualizarAsignaciones(Dictionary<Label, List<string>> newAssignments)
         {
-            foreach (var kvp in asignaciones)
+
+            foreach (var kvp in newAssignments)
             {
                 Label cajaLabel = kvp.Key;
 
@@ -113,12 +161,15 @@ namespace mandiles
                     continue;
                 }
 
+                // Lista de empacadores asignados a esta caja (según la repartición de Form2)
                 List<string> empacadoresAsignados = kvp.Value;
 
+                // -------------------------------
+                // 1) ACTUALIZAR LABELS EN LA UI
+                // -------------------------------
                 if (asignacionLabels.ContainsKey(cajaKey))
                 {
                     List<Label> labelsCaja = asignacionLabels[cajaKey];
-                    // Actualizar cada uno de los labels asignados a la caja
                     for (int i = 0; i < labelsCaja.Count; i++)
                     {
                         if (i < empacadoresAsignados.Count)
@@ -133,114 +184,55 @@ namespace mandiles
                         }
                     }
                 }
-                else
+
+                // -----------------------------------------------------
+                // 2) SINCRONIZAR LA LISTA 'Empacadores' EN LA CLASE Caja
+                // -----------------------------------------------------
+                if (cajass.ContainsKey(cajaKey))
                 {
-                    MessageBox.Show($"No se encontró asignación de labels para {cajaKey}");
+                    Caja cajaObj = cajass[cajaKey];
+                    cajaObj.Empacadores.Clear();
+                    cajaObj.Empacadores.AddRange(empacadoresAsignados);
                 }
             }
         }
 
-        public void AsignarEmpacador(string cajaName, string nombreEmpacador)
-        {
-            if (asignacionLabels.ContainsKey(cajaName))
-            {
-                List<Label> labelsAsignacion = asignacionLabels[cajaName];
-                // Se asigna en el primer label vacío.
-                foreach (Label lbl in labelsAsignacion)
-                {
-                    if (string.IsNullOrEmpty(lbl.Text))
-                    {
-                        lbl.Text = nombreEmpacador;
-                        lbl.Visible = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show($"No se encontró la caja {cajaName} en asignacionLabels");
-            }
-        }
-
-
-
+       
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             if (comboBox1.SelectedItem == null) return;
 
             string selectedCaja = comboBox1.SelectedItem.ToString();
 
-            // Cambia el color de la caja seleccionada
-            CambiarColorCaja(selectedCaja, Color.Green);
+            // Llamar a OpenCaja para que la lógica interna de la caja sepa que está abierta
+            OpenCaja(selectedCaja);
 
-            // Mueve la caja a comboBox2
+            // Si quieres, también puedes cambiar el color, pero en realidad OpenCaja ya lo hace:
+            // CambiarColorCaja(selectedCaja, Color.Green);
+
             MoverCaja(comboBox1, comboBox2, selectedCaja);
 
-            if (!comboBox3.Items.Contains(selectedCaja)) // Evitar duplicados
-            {
+            if (!comboBox3.Items.Contains(selectedCaja))
                 comboBox3.Items.Add(selectedCaja);
-            }
-
 
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox2.SelectedItem == null) return;
-
             string selectedCaja = comboBox2.SelectedItem.ToString();
-
-            // Cambia el color de la caja a transparente (cerrada)
             CambiarColorCaja(selectedCaja, Color.Transparent);
-
-            // Mueve la caja de regreso a comboBox1
             MoverCaja(comboBox2, comboBox1, selectedCaja);
-
-            Label cajaCerrada = cajas[selectedCaja];
-
-            // 4) Si en el diccionario 'asignaciones' existe esta caja, saca a sus empacadores
-            if (asignaciones.ContainsKey(cajaCerrada))
-            {
-                // Lista temporal con los empacadores que se quedan sin caja
-                List<string> empacadoresSinCaja = new List<string>(asignaciones[cajaCerrada]);
-
-                // Limpia la lista de esa caja en el diccionario
-                asignaciones[cajaCerrada].Clear();
-
-                // 5) Actualiza la interfaz para que se borre el nombre (por ejemplo, "pepe")
-                ActualizarAsignaciones(asignaciones);
-
-                // 6) (Opcional) Reasignar automáticamente a los empacadoresSinCaja
-                //    Si NO quieres reasignar de inmediato, puedes omitir esta parte.
-                ReasignarEmpacadores(empacadoresSinCaja);
-            }
-
+            CloseCaja(selectedCaja);
         }
 
-        private void CambiarColorCaja(string caja, Color color)
-        {
-            if (cajas.ContainsKey(caja))
-            {
-                cajas[caja].BackColor = color;
-            }
-        }
-
-
-        
-
-
+       
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(comboBox3.SelectedItem == null) return;
-
+            if (comboBox3.SelectedItem == null) return;
             string selectedCaja = comboBox3.SelectedItem.ToString();
-
-            // Cambia el color de la caja a naranja (cerrada temporalmente)
             CambiarColorCaja(selectedCaja, Color.Orange);
-
-            // Mueve la caja a comboBox1
             MoverCaja(comboBox3, comboBox1, selectedCaja);
         }
 
@@ -265,50 +257,21 @@ namespace mandiles
 
         private void button4_Click(object sender, EventArgs e)
         {
-          
-        }
-
-        private void ReasignarEmpacadores(List<string> empacadoresSinCaja)
-        {
-            // 1) Buscar las cajas que aún están abiertas (BackColor == Color.Green)
-            var cajasAbiertas = asignaciones
-                .Where(kvp => kvp.Key.BackColor == Color.Green)
-                .Select(kvp => kvp.Key)
-                .ToList();
-
-            if (cajasAbiertas.Count == 0)
+            // Extraemos los empacadores sin caja de todas las cajas cerradas
+            List<string> empacadoresSinCaja = new List<string>();
+            foreach (var kvp in asignaciones)
             {
-                MessageBox.Show("No hay cajas abiertas para reasignar empacadores.");
-                return;
-            }
-
-            // 2) Mezclar los empacadores para asignarlos aleatoriamente
-            Random rng = new Random();
-            empacadoresSinCaja = empacadoresSinCaja.OrderBy(x => rng.Next()).ToList();
-
-            // 3) Asignar cada empacador a una caja abierta que tenga menos de 3
-            foreach (var emp in empacadoresSinCaja)
-            {
-                var cajasConEspacio = cajasAbiertas
-                    .Where(caja => asignaciones[caja].Count < 3)
-                    .ToList();
-
-                if (cajasConEspacio.Count == 0)
+                if (kvp.Key.BackColor == Color.Transparent) // La caja está cerrada
                 {
-                    MessageBox.Show($"No se pudo reasignar al empacador '{emp}': todas las cajas abiertas están llenas.");
-                    continue;
+                    empacadoresSinCaja.AddRange(kvp.Value);
                 }
-
-                // Elige una caja al azar
-                Label cajaElegida = cajasConEspacio[rng.Next(cajasConEspacio.Count)];
-                asignaciones[cajaElegida].Add(emp);
             }
 
-            // 4) Actualizar la interfaz
-            ActualizarAsignaciones(asignaciones);
-            MessageBox.Show("Reasignación completada.");
+            // Llamamos al método pasando la lista de empacadores sin caja
+            ReasignarEmpacadores(empacadoresSinCaja);
         }
 
+        
     }
 
 }
