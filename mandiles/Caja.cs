@@ -40,5 +40,10 @@ namespace mandiles
             }
         }
 
+        public bool TieneEspacio()
+        {
+            return Empacadores.Count < 3;  // Suponiendo que la caja tiene un máximo de 3 empacadores
+        } 
+
     }
 }

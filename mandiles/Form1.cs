@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,14 +19,13 @@ namespace mandiles
         private Dictionary<string, List<Label>> asignacionLabels = new Dictionary<string, List<Label>>();
         private Dictionary<Label, List<string>> asignaciones = new Dictionary<Label, List<string>>();
         private Dictionary<string, Caja> cajass = new Dictionary<string, Caja>();
-
-
+        private Dictionary<int, List<string>> CajasTemporales = new Dictionary<int, List<string>>();
 
         public Form1()
         {
             InitializeComponent();
             InicializarDiccionarios();
-            InicializarComboBox();
+            InicializarComboBox();  
 
         }
 
@@ -94,9 +95,12 @@ namespace mandiles
             ReasignarEmpacadores(empacadoresAReasignar);
         }
 
+        
+
         private void ReasignarEmpacadores(List<string> empacadores)
         {
             var openCajas = cajass.Values.Where(c => c.IsOpen).OrderBy(c => c.Empacadores.Count).ToList();
+
             foreach (var emp in empacadores)
             {
                 foreach (var caja in openCajas)
@@ -197,7 +201,17 @@ namespace mandiles
             }
         }
 
-       
+        private void AgregarAEmpacadoresEspera(List<string> empacadores)
+        {
+            // Lista de espera (puedes implementarla como un List o cualquier otra estructura)
+            foreach (var empacador in empacadores)
+            {
+                // Agregar a la lista de espera (no se hace nada visualmente en este caso)
+                Console.WriteLine($"Empacador {empacador} en lista de espera.");
+            }
+        }
+
+
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -232,6 +246,24 @@ namespace mandiles
         {
             if (comboBox3.SelectedItem == null) return;
             string selectedCaja = comboBox3.SelectedItem.ToString();
+
+            var result = MessageBox.Show("¿El cierre será mayor a 45 minutos?", "Cierre Temporal", MessageBoxButtons.YesNo);
+            Caja cajaCierre = cajass[selectedCaja];
+
+            if (result == DialogResult.Yes)
+            {
+                // Si la respuesta es sí, reasignamos los empacadores a otras cajas con espacio
+                
+                ReasignarEmpacadores(cajaCierre.Empacadores);
+            }
+            else
+            {
+                // Si la respuesta es no, agregamos a los empacadores a una lista de espera
+                AgregarAEmpacadoresEspera(cajaCierre.Empacadores);
+            }
+
+
+
             CambiarColorCaja(selectedCaja, Color.Orange);
             MoverCaja(comboBox3, comboBox1, selectedCaja);
         }
