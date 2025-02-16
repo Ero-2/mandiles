@@ -19,7 +19,7 @@ namespace mandiles
         private Dictionary<string, List<Label>> asignacionLabels = new Dictionary<string, List<Label>>();
         private Dictionary<Label, List<string>> asignaciones = new Dictionary<Label, List<string>>();
         private Dictionary<string, Caja> cajass = new Dictionary<string, Caja>();
-        private Dictionary<int, List<string>> CajasTemporales = new Dictionary<int, List<string>>();
+        private Dictionary<string, List<string>> temporalClosureEmpacadores = new Dictionary<string, List<string>>();
 
         public Form1()
         {
@@ -28,6 +28,8 @@ namespace mandiles
             InicializarComboBox();  
 
         }
+
+
 
 
         private void InicializarDiccionarios()
@@ -95,43 +97,49 @@ namespace mandiles
             ReasignarEmpacadores(empacadoresAReasignar);
         }
 
-        
+
 
         private void ReasignarEmpacadores(List<string> empacadores)
         {
-            var openCajas = cajass.Values.Where(c => c.IsOpen).OrderBy(c => c.Empacadores.Count).ToList();
+            // Solo cajas que están abiertas (IsOpen = true)
+            var openCajas = cajass.Values
+                                  .Where(c => c.IsOpen)
+                                  .OrderBy(c => c.Empacadores.Count)
+                                  .ToList();
 
-            foreach (var emp in empacadores)
+            if (!openCajas.Any())
             {
+                MessageBox.Show("No hay cajas abiertas para reasignar empacadores.");
+                return;
+            }
+
+            // Recorremos una copia de la lista para evitar la excepción de “colección modificada”
+            var copiaEmpacadores = new List<string>(empacadores);
+
+            foreach (var emp in copiaEmpacadores)
+            {
+                bool reasignado = false;
                 foreach (var caja in openCajas)
                 {
+                    // Buscamos una caja con espacio (3 o el límite que manejes)
                     if (caja.Empacadores.Count < 3)
                     {
                         caja.Empacadores.Add(emp);
+                        reasignado = true;
 
-                        // Cambiar color del empacador reasignado
-                        Label labelEmpacador = caja.AsignacionLabels.FirstOrDefault(l => string.IsNullOrEmpty(l.Text));
-                        if (labelEmpacador != null)
-                        {
-                            labelEmpacador.Text = emp;
-                            labelEmpacador.ForeColor = Color.Red; // Color para identificar que fue movido
+                        // Actualizar UI
+                        caja.UpdateUI();
 
-                            // Opcional: Restaurar color después de unos segundos
-                            Task.Delay(3000).ContinueWith(_ => this.Invoke((Action)(() => labelEmpacador.ForeColor = Color.Black)));
-                        }
+                        // Opcional: Cambiar color de label, etc.
                         break;
                     }
                 }
-            }
-
-            foreach (var caja in openCajas)
-            {
-                caja.UpdateUI();
+                // Si no se reasignó, puedes hacer algo extra (lista de espera, mensaje, etc.)
             }
         }
 
 
-        
+
 
         private void MoverCaja(ComboBox origen, ComboBox destino, string caja)
         {
@@ -212,23 +220,101 @@ namespace mandiles
         }
 
 
+        private void RedistribuirEmpacadoresNuevaCaja(string cajaNueva)
+        {
+            if (!cajass.ContainsKey(cajaNueva) || !cajass[cajaNueva].IsOpen)
+                return;
+
+            var cajasConMasDeUnEmpacador = cajass.Values
+                .Where(c => c.IsOpen && c.Empacadores.Count > 1)
+                .OrderByDescending(c => c.Empacadores.Count)
+                .ToList();
+
+            while (cajass[cajaNueva].Empacadores.Count < 2 && cajasConMasDeUnEmpacador.Count > 0)
+            {
+                foreach (var caja in cajasConMasDeUnEmpacador.ToList())
+                {
+                    if (caja.Empacadores.Count > 1)
+                    {
+                        var empacadorMovido = caja.Empacadores.Last();
+                        caja.Empacadores.Remove(empacadorMovido);
+                        cajass[cajaNueva].Empacadores.Add(empacadorMovido);
+
+                        caja.UpdateUI();
+                        cajass[cajaNueva].UpdateUI();
+                    }
+
+                    if (caja.Empacadores.Count == 1)
+                        cajasConMasDeUnEmpacador.Remove(caja);
+
+                    if (cajass[cajaNueva].Empacadores.Count >= 2)
+                        break;
+                }
+            }
+        }
+
+
+
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             if (comboBox1.SelectedItem == null) return;
+            string cajaReabierta = comboBox1.SelectedItem.ToString();
 
-            string selectedCaja = comboBox1.SelectedItem.ToString();
+            // Verificamos si la caja existe en el diccionario
+            if (cajass.ContainsKey(cajaReabierta))
+            {
+                cajass[cajaReabierta].IsOpen = true;
+                cajass[cajaReabierta].MainLabel.BackColor = Color.Green;
 
-            // Llamar a OpenCaja para que la lógica interna de la caja sepa que está abierta
-            OpenCaja(selectedCaja);
+                // Si la caja tiene empacadores guardados por el cierre temporal
+                if (temporalClosureEmpacadores.ContainsKey(cajaReabierta))
+                {
+                    var empacadoresOriginales = temporalClosureEmpacadores[cajaReabierta];
 
-            // Si quieres, también puedes cambiar el color, pero en realidad OpenCaja ya lo hace:
-            // CambiarColorCaja(selectedCaja, Color.Green);
+                    foreach (var emp in empacadoresOriginales.ToList()) // Usamos ToList() para evitar modificar la colección mientras iteramos
+                    {
+                        // Removemos al empacador de cualquier otra caja donde haya sido reasignado
+                        foreach (var caja in cajass.Values)
+                        {
+                            if (caja.Empacadores.Contains(emp))
+                            {
+                                caja.Empacadores.Remove(emp);
+                                caja.UpdateUI();
+                                break; // Solo está en una caja, así que podemos salir del loop
+                            }
+                        }
 
-            MoverCaja(comboBox1, comboBox2, selectedCaja);
+                        // Reasignamos el empacador a la caja reabierta
+                        if (cajass[cajaReabierta].Empacadores.Count < 3 && !cajass[cajaReabierta].Empacadores.Contains(emp))
+                        {
+                            cajass[cajaReabierta].Empacadores.Add(emp);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"No hay espacio para el empacador {emp} en la caja {cajaReabierta}.");
+                        }
+                    }
 
-            if (!comboBox3.Items.Contains(selectedCaja))
-                comboBox3.Items.Add(selectedCaja);
+                    // Limpiamos la lista después de reasignarlos
+                    temporalClosureEmpacadores[cajaReabierta].Clear();
+
+                    // Actualizamos la UI de la caja reabierta
+                    cajass[cajaReabierta].UpdateUI();
+                }
+
+                // **Nueva lógica: Redistribuir empacadores si es una nueva caja abierta**
+                RedistribuirEmpacadoresNuevaCaja(cajaReabierta);
+
+                // Mover la caja entre los ComboBox correspondientes
+                MoverCaja(comboBox1, comboBox2, cajaReabierta);
+
+                // Agregar la caja al ComboBox3 si no está presente
+                if (!comboBox3.Items.Contains(cajaReabierta))
+                    comboBox3.Items.Add(cajaReabierta);
+            }
+
 
         }
 
@@ -241,31 +327,58 @@ namespace mandiles
             CloseCaja(selectedCaja);
         }
 
-       
+
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox3.SelectedItem == null) return;
             string selectedCaja = comboBox3.SelectedItem.ToString();
 
-            var result = MessageBox.Show("¿El cierre será mayor a 45 minutos?", "Cierre Temporal", MessageBoxButtons.YesNo);
+            if (!cajass.ContainsKey(selectedCaja))
+            {
+                MessageBox.Show("La caja seleccionada no existe.");
+                return;
+            }
+
             Caja cajaCierre = cajass[selectedCaja];
 
-            if (result == DialogResult.Yes)
+           
+
+            // Preguntamos si el cierre será mayor a 45 minutos
+            var resultt = MessageBox.Show("¿El cierre será mayor a 45 minutos?",
+                                         "Cierre Temporal",
+                                         MessageBoxButtons.YesNo);
+
+            // 1) Marcamos la caja como cerrada temporalmente
+            cajaCierre.IsOpen = false;
+            CambiarColorCaja(selectedCaja, Color.Orange);
+
+            // 2) Guardamos los empacadores que tenía en un diccionario
+            //    (así sabemos quiénes eran los 'originales' de esta caja)
+            if (!temporalClosureEmpacadores.ContainsKey(selectedCaja))
+                temporalClosureEmpacadores[selectedCaja] = new List<string>();
+
+            // Copiamos la lista de empacadores a nuestro diccionario
+            temporalClosureEmpacadores[selectedCaja].Clear();
+            temporalClosureEmpacadores[selectedCaja].AddRange(cajaCierre.Empacadores);
+
+            // 3) Limpiamos la caja
+            cajaCierre.Empacadores.Clear();
+            cajaCierre.UpdateUI();
+
+            // 4) Si el cierre es mayor a 45 min, reasignar a otras cajas abiertas.
+            //    Si no, van a una lista de espera.
+            if (resultt == DialogResult.Yes)
             {
-                // Si la respuesta es sí, reasignamos los empacadores a otras cajas con espacio
-                
-                ReasignarEmpacadores(cajaCierre.Empacadores);
+                ReasignarEmpacadores(temporalClosureEmpacadores[selectedCaja]);
             }
             else
             {
-                // Si la respuesta es no, agregamos a los empacadores a una lista de espera
-                AgregarAEmpacadoresEspera(cajaCierre.Empacadores);
+                AgregarAEmpacadoresEspera(temporalClosureEmpacadores[selectedCaja]);
             }
 
-
-
-            CambiarColorCaja(selectedCaja, Color.Orange);
+            // Mover la caja al comboBox correspondiente si quieres (opcional)
             MoverCaja(comboBox3, comboBox1, selectedCaja);
+
         }
 
         public List<Label> ObtenerCajasAbiertas()
