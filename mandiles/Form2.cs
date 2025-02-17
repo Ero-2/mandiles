@@ -13,6 +13,8 @@ namespace mandiles
     public partial class Form2 : Form
     {
 
+        private Empacadores EmpacadoresHorario;
+
         private Form1 form1;
        
         List<string> empacadores = new List<string>();
@@ -21,12 +23,48 @@ namespace mandiles
         {
             InitializeComponent();
             form1 = mainForm;
+            EmpacadoresHorario= new Empacadores();
         }
 
-        private void Form2_Load(object sender, EventArgs e)
+        private Dictionary<string, List<string>> horario = new Dictionary<string, List<string>>();
+
+
+        public void CargarHorarioaDataGridView()
         {
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
 
+            // Definir las columnas del DataGridView
+            dataGridView1.Columns.Add("Empacador", "Empacador");
+            dataGridView1.Columns.Add("Lunes", "Lunes");
+            dataGridView1.Columns.Add("Martes", "Martes");
+            dataGridView1.Columns.Add("Miércoles", "Miércoles");
+            dataGridView1.Columns.Add("Jueves", "Jueves");
+            dataGridView1.Columns.Add("Viernes", "Viernes");
+            dataGridView1.Columns.Add("Sabado", "Sabado");
+            dataGridView1.Columns.Add("Domingo", "Domingo");
+
+            // Obtener el horario desde la clase Empacadores
+            var horarios = EmpacadoresHorario.ObtenerHorario();
+
+            // Llenar el DataGridView con los datos
+            foreach (var empacador in horarios)
+            {
+                string nombre = empacador.Key;
+                string lunes = empacador.Value.ContainsKey("Lunes") ? empacador.Value["Lunes"] : "";
+                string martes = empacador.Value.ContainsKey("Martes") ? empacador.Value["Martes"] : "";
+                string miercoles = empacador.Value.ContainsKey("Miercoles") ? empacador.Value["Miercoles"] : "";
+                string jueves = empacador.Value.ContainsKey("Jueves") ? empacador.Value["Jueves"] : "";
+                string viernes = empacador.Value.ContainsKey("Viernes") ? empacador.Value["Viernes"] : "";
+                string sabado = empacador.Value.ContainsKey("Sabado") ? empacador.Value["Sabado"] : "";
+                string domingo = empacador.Value.ContainsKey("Domingo") ? empacador.Value["Domingo"] : "";
+
+                dataGridView1.Rows.Add(nombre, lunes, martes, miercoles, jueves, viernes,sabado, domingo );
+            }
         }
+
+
+        
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -137,6 +175,12 @@ namespace mandiles
                 mensaje += $"{cajaName}: {listaEmp}\n";
             }
             MessageBox.Show(mensaje, "Asignación de Empacadores");
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+         
+          CargarHorarioaDataGridView(); // Llenar el DataGridView
         }
     }
 }
