@@ -33,10 +33,10 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.AgregarEmpacador = new System.Windows.Forms.Button();
-            this.ListaEmpacadores = new System.Windows.Forms.ListBox();
+            this.lbAsignadosHoy = new System.Windows.Forms.ListBox();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button2 = new System.Windows.Forms.Button();
+            this.clbAusencias = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,15 +54,15 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Haettenschweiler", 26.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(250, 9);
+            this.label2.Location = new System.Drawing.Point(374, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(300, 37);
+            this.label2.Size = new System.Drawing.Size(292, 37);
             this.label2.TabIndex = 2;
-            this.label2.Text = "REGISTRO DE EMPACADORES";
+            this.label2.Text = "HORARIO DE EMPACADORES";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(3, 101);
+            this.textBox1.Location = new System.Drawing.Point(19, 72);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(263, 20);
             this.textBox1.TabIndex = 3;
@@ -72,7 +72,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Play Pretend", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(46, 85);
+            this.label3.Location = new System.Drawing.Point(17, 58);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(175, 11);
             this.label3.TabIndex = 4;
@@ -81,7 +81,7 @@
             // AgregarEmpacador
             // 
             this.AgregarEmpacador.Font = new System.Drawing.Font("Daydream", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AgregarEmpacador.Location = new System.Drawing.Point(3, 146);
+            this.AgregarEmpacador.Location = new System.Drawing.Point(19, 98);
             this.AgregarEmpacador.Name = "AgregarEmpacador";
             this.AgregarEmpacador.Size = new System.Drawing.Size(263, 26);
             this.AgregarEmpacador.TabIndex = 5;
@@ -89,20 +89,20 @@
             this.AgregarEmpacador.UseVisualStyleBackColor = true;
             this.AgregarEmpacador.Click += new System.EventHandler(this.button1_Click);
             // 
-            // ListaEmpacadores
+            // lbAsignadosHoy
             // 
-            this.ListaEmpacadores.FormattingEnabled = true;
-            this.ListaEmpacadores.Location = new System.Drawing.Point(451, 59);
-            this.ListaEmpacadores.Name = "ListaEmpacadores";
-            this.ListaEmpacadores.Size = new System.Drawing.Size(276, 134);
-            this.ListaEmpacadores.TabIndex = 6;
+            this.lbAsignadosHoy.FormattingEnabled = true;
+            this.lbAsignadosHoy.Location = new System.Drawing.Point(12, 130);
+            this.lbAsignadosHoy.Name = "lbAsignadosHoy";
+            this.lbAsignadosHoy.Size = new System.Drawing.Size(276, 134);
+            this.lbAsignadosHoy.TabIndex = 6;
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Daydream", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(451, 199);
+            this.button1.Location = new System.Drawing.Point(354, 351);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(276, 27);
+            this.button1.Size = new System.Drawing.Size(362, 27);
             this.button1.TabIndex = 7;
             this.button1.Text = "ASIGNAR";
             this.button1.UseVisualStyleBackColor = true;
@@ -111,30 +111,28 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 254);
+            this.dataGridView1.Location = new System.Drawing.Point(312, 49);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(424, 154);
+            this.dataGridView1.Size = new System.Drawing.Size(440, 296);
             this.dataGridView1.TabIndex = 8;
             // 
-            // button2
+            // clbAusencias
             // 
-            this.button2.Font = new System.Drawing.Font("Daydream", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(468, 360);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(276, 26);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "GUARDAR CAMBIOS";
-            this.button2.UseVisualStyleBackColor = true;
+            this.clbAusencias.FormattingEnabled = true;
+            this.clbAusencias.Location = new System.Drawing.Point(19, 284);
+            this.clbAusencias.Name = "clbAusencias";
+            this.clbAusencias.Size = new System.Drawing.Size(120, 94);
+            this.clbAusencias.TabIndex = 9;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.clbAusencias);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.ListaEmpacadores);
+            this.Controls.Add(this.lbAsignadosHoy);
             this.Controls.Add(this.AgregarEmpacador);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox1);
@@ -156,9 +154,9 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button AgregarEmpacador;
-        private System.Windows.Forms.ListBox ListaEmpacadores;
+        private System.Windows.Forms.ListBox lbAsignadosHoy;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.CheckedListBox clbAusencias;
     }
 }
