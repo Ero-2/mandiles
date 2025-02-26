@@ -19,7 +19,7 @@ namespace mandiles
         private Empacadores EmpacadoresHorario;
 
         private Form1 form1;
-       
+
         List<string> empacadores = new List<string>();
 
         private SQLiteConnection conexion;
@@ -29,47 +29,47 @@ namespace mandiles
         {
             InitializeComponent();
             form1 = mainForm;
-            EmpacadoresHorario= new Empacadores();
+            EmpacadoresHorario = new Empacadores();
+            ConectarBaseDeDatos();
             CargarEmpacadoresDelDia();
             ConectarBaseDeDatos();
         }
 
         private void CargarEmpacadoresDelDia()
         {
-            // Usar la instancia EmpacadoresHorario que ya está definida
-            List<string> empacadoresAsignados = EmpacadoresHorario.ObtenerEmpacadoresDelHorario(DateTime.Today);
+            try
+            {
+                string diaActual = DateTime.Now.ToString("dddd", new CultureInfo("es-ES")).ToUpper();
+                MessageBox.Show($"Día actual: {diaActual}");
 
-            lbAsignadosHoy.Items.Clear();
-            lbAsignadosHoy.Items.AddRange(empacadoresAsignados.ToArray());
+                // Verifica que EmpacadoresHorario está inicializado
+                if (EmpacadoresHorario == null)
+                {
+                    MessageBox.Show("Error: EmpacadoresHorario no está inicializado");
+                    return;
+                }
 
-            clbAusencias.Items.Clear();
-            clbAusencias.Items.AddRange(empacadoresAsignados.ToArray());
+                List<string> empacadores = EmpacadoresHorario.ObtenerEmpacadoresDelHorario(DateTime.Now);
+                MessageBox.Show($"Empacadores encontrados para {diaActual}: {empacadores.Count}");
 
+                lbAsignadosHoy.Items.Clear();
+                clbAusencias.Items.Clear();
+
+                lbAsignadosHoy.Items.AddRange(empacadores.ToArray());
+                clbAusencias.Items.AddRange(empacadores.ToArray());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error en CargarEmpacadoresDelDia: {ex.Message}\n{ex.StackTrace}");
+            }
         }
 
-        private List<string> ObtenerEmpacadoresFinales()
-        {
-            List<string> empacadoresFinales = new List<string>();
 
-            // Agregar todos los empacadores que estaban programados
-            foreach (var item in lbAsignadosHoy.Items)
-            {
-                empacadoresFinales.Add(item.ToString());
-            }
-
-            // Remover los que están marcados como ausentes
-            foreach (var item in clbAusencias.CheckedItems)
-            {
-                empacadoresFinales.Remove(item.ToString());
-            }
-
-            return empacadoresFinales;
-        }
         private void ConectarBaseDeDatos()
         {
             try
             {
-                string connectionString = "Data Source=C:\\Users\\sams6260\\Documents\\horariosEmpacadores.db;Version=3;";
+                string connectionString = "Data Source=C:\\Users\\eroer\\Downloads\\horariosEmpacadores.db;Version=3;";
                 conexion = new SQLiteConnection(connectionString);
                 conexion.Open();
                 MessageBox.Show("Conexión exitosa a la base de datos");
@@ -77,6 +77,15 @@ namespace mandiles
             catch (Exception ex)
             {
                 MessageBox.Show("Error al conectar la base de datos: " + ex.Message);
+            }
+        }
+
+        private void CerrarConexion()
+        {
+            if (conexion != null)
+            {
+                conexion.Close();
+                MessageBox.Show("Conexión cerrada");
             }
         }
 
@@ -96,42 +105,40 @@ namespace mandiles
             }
         }
 
-        private void InsertarEmpacador(string nombre, string lunes, string martes, string miercoles,
-                               string jueves, string viernes, string sabado, string domingo)
+        private void CargarHorariosEnClaseEmpacadores()
         {
-            try
-            {
-                string query = "INSERT INTO HorarioEmpacadores (EMPACADOR, LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO) " +
-                               "VALUES (@empacador, @lunes, @martes, @miercoles, @jueves, @viernes, @sabado, @domingo)";
-                using (SQLiteCommand cmd = new SQLiteCommand(query, conexion))
-                {
-                    cmd.Parameters.AddWithValue("@empacador", nombre);
-                    cmd.Parameters.AddWithValue("@lunes", lunes);
-                    cmd.Parameters.AddWithValue("@martes", martes);
-                    cmd.Parameters.AddWithValue("@miercoles", miercoles);
-                    cmd.Parameters.AddWithValue("@jueves", jueves);
-                    cmd.Parameters.AddWithValue("@viernes", viernes);
-                    cmd.Parameters.AddWithValue("@sabado", sabado);
-                    cmd.Parameters.AddWithValue("@domingo", domingo);
+            // Ejemplo: asumiendo que tu tabla se llama HorarioEmpacadores y que
+            // contiene columnas: Nombre, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo.
+            string query = "SELECT Empacador, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo FROM HorarioEmpacadores";
 
-                    cmd.ExecuteNonQuery();
-                    MessageBox.Show("Empacador agregado exitosamente");
+            using (SQLiteCommand cmd = new SQLiteCommand(query, conexion))
+            {
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string nombre = reader["Empacador"].ToString();
+
+                        // OJO: Normaliza cada string de día para que coincida con
+                        // la forma en que luego vas a buscar (MARTES, MIERCOLES, etc.).
+                        // Aquí puedes simplemente asignar tal cual, si en tu clase
+                        // Empacadores siempre usas mayúsculas para el diccionario.
+                        EmpacadoresHorario.AsignarHorario(nombre, "LUNES", reader["Lunes"].ToString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "MARTES", reader["Martes"].ToString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "MIERCOLES", reader["Miercoles"].ToString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "JUEVES", reader["Jueves"].ToString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "VIERNES", reader["Viernes"].ToString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "SABADO", reader["Sabado"].ToString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "DOMINGO", reader["Domingo"].ToString());
+                    }
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al insertar datos: " + ex.Message);
-            }
         }
 
-        private void CerrarConexion()
-        {
-            if (conexion != null)
-            {
-                conexion.Close();
-                MessageBox.Show("Conexión cerrada");
-            }
-        }
+
+
+
+
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -280,6 +287,8 @@ namespace mandiles
         {
             ConectarBaseDeDatos();
             CargarHorarios();
+            CargarHorariosEnClaseEmpacadores();
+            CargarEmpacadoresDelDia();
         }
 
         private void button2_Click(object sender, EventArgs e)
