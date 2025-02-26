@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SQLite;
 
 namespace mandiles
 {
@@ -21,6 +22,7 @@ namespace mandiles
        
         List<string> empacadores = new List<string>();
 
+        private SQLiteConnection conexion;
 
 
         public Form2(Form1 mainForm)
@@ -29,6 +31,7 @@ namespace mandiles
             form1 = mainForm;
             EmpacadoresHorario= new Empacadores();
             CargarEmpacadoresDelDia();
+            ConectarBaseDeDatos();
         }
 
         private void CargarEmpacadoresDelDia()
@@ -62,45 +65,79 @@ namespace mandiles
 
             return empacadoresFinales;
         }
-
-
-
-        public void CargarHorarioaDataGridView()
+        private void ConectarBaseDeDatos()
         {
-            dataGridView1.Rows.Clear();
-            dataGridView1.Columns.Clear();
-
-            // Definir las columnas del DataGridView
-            dataGridView1.Columns.Add("Empacador", "Empacador");
-            dataGridView1.Columns.Add("Lunes", "Lunes");
-            dataGridView1.Columns.Add("Martes", "Martes");
-            dataGridView1.Columns.Add("Miercoles", "Miercoles");
-            dataGridView1.Columns.Add("Jueves", "Jueves");
-            dataGridView1.Columns.Add("Viernes", "Viernes");
-            dataGridView1.Columns.Add("Sabado", "Sabado");
-            dataGridView1.Columns.Add("Domingo", "Domingo");
-
-            // Obtener el horario desde la clase Empacadores
-            var horarios = EmpacadoresHorario.ObtenerHorario();
-
-            // Llenar el DataGridView con los datos
-            foreach (var empacador in horarios)
+            try
             {
-                string nombre = empacador.Key;
-                string lunes = empacador.Value.ContainsKey("Lunes") ? empacador.Value["Lunes"] : "";
-                string martes = empacador.Value.ContainsKey("Martes") ? empacador.Value["Martes"] : "";
-                string miercoles = empacador.Value.ContainsKey("Miercoles") ? empacador.Value["Miercoles"] : "";
-                string jueves = empacador.Value.ContainsKey("Jueves") ? empacador.Value["Jueves"] : "";
-                string viernes = empacador.Value.ContainsKey("Viernes") ? empacador.Value["Viernes"] : "";
-                string sabado = empacador.Value.ContainsKey("Sabado") ? empacador.Value["Sabado"] : "";
-                string domingo = empacador.Value.ContainsKey("Domingo") ? empacador.Value["Domingo"] : "";
-
-                dataGridView1.Rows.Add(nombre, lunes, martes, miercoles, jueves, viernes,sabado, domingo );
+                string connectionString = "Data Source=C:\\Users\\sams6260\\Documents\\horariosEmpacadores.db;Version=3;";
+                conexion = new SQLiteConnection(connectionString);
+                conexion.Open();
+                MessageBox.Show("Conexión exitosa a la base de datos");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al conectar la base de datos: " + ex.Message);
             }
         }
 
+        private void CargarHorarios()
+        {
+            try
+            {
+                string query = "SELECT * FROM HorarioEmpacadores"; // Ajusta el nombre de la tabla
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, conexion);
+                System.Data.DataTable dt = new System.Data.DataTable();
+                adapter.Fill(dt);
+                dataGridView1.DataSource = dt; // dataGridView1 es el nombre de tu control
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar los datos: " + ex.Message);
+            }
+        }
 
-        
+        private void InsertarEmpacador(string nombre, string lunes, string martes, string miercoles,
+                               string jueves, string viernes, string sabado, string domingo)
+        {
+            try
+            {
+                string query = "INSERT INTO HorarioEmpacadores (EMPACADOR, LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO) " +
+                               "VALUES (@empacador, @lunes, @martes, @miercoles, @jueves, @viernes, @sabado, @domingo)";
+                using (SQLiteCommand cmd = new SQLiteCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@empacador", nombre);
+                    cmd.Parameters.AddWithValue("@lunes", lunes);
+                    cmd.Parameters.AddWithValue("@martes", martes);
+                    cmd.Parameters.AddWithValue("@miercoles", miercoles);
+                    cmd.Parameters.AddWithValue("@jueves", jueves);
+                    cmd.Parameters.AddWithValue("@viernes", viernes);
+                    cmd.Parameters.AddWithValue("@sabado", sabado);
+                    cmd.Parameters.AddWithValue("@domingo", domingo);
+
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Empacador agregado exitosamente");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al insertar datos: " + ex.Message);
+            }
+        }
+
+        private void CerrarConexion()
+        {
+            if (conexion != null)
+            {
+                conexion.Close();
+                MessageBox.Show("Conexión cerrada");
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CerrarConexion();
+        }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -152,25 +189,17 @@ namespace mandiles
                 return;
             }
 
-            // 3) Obtener el día actual en español y normalizarlo
             string diaActual = DateTime.Now.ToString("dddd", new CultureInfo("es-ES"));
-            // Normalizamos quitando tildes:
-            diaActual = diaActual.Replace("á", "a")
-                                 .Replace("é", "e")
-                                 .Replace("í", "i")
-                                 .Replace("ó", "o")
-                                 .Replace("ú", "u");
-            // Aseguramos que la primera letra esté en mayúscula:
-            diaActual = char.ToUpper(diaActual[0]) + diaActual.Substring(1);
-            // Ahora, si hoy es miércoles, diaActual quedará como "Miercoles" o "Miércoles"
-            // Según el formato usado en las asignaciones. Aquí usaremos "Miércoles" (con tilde)
-            // Por lo tanto, reemplazamos "Miercoles" por "Miércoles" si es el caso:
-            if (diaActual.Equals("Miercoles", StringComparison.OrdinalIgnoreCase))
-                diaActual = "Miercoles";
-            if(diaActual.Equals("Jueves", StringComparison.OrdinalIgnoreCase))
-                diaActual = "Jueves";
+            // Normalizar sin tildes y en mayúsculas:
+            diaActual = diaActual
+                .Replace("á", "a")
+                .Replace("é", "e")
+                .Replace("í", "i")
+                .Replace("ó", "o")
+                .Replace("ú", "u")
+                .ToUpper(); // Convertir a mayúsculas (ej: "MARTES")
 
-            // 4) Obtener los empacadores programados para hoy (excluyendo los que tienen "DESCANSO")
+            // 4) Obtener los empacadores programados para hoy
             var horariosDict = EmpacadoresHorario.ObtenerHorario();
             List<string> empacadoresHoy = new List<string>();
 
@@ -183,6 +212,7 @@ namespace mandiles
                     empacadoresHoy.Add(emp.Key);
                 }
             }
+
 
             // Verificar si hay empacadores para asignar
             if (empacadoresHoy.Count == 0)
@@ -248,8 +278,8 @@ namespace mandiles
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            
-             CargarHorarioaDataGridView(); // Llenar el DataGridView
+            ConectarBaseDeDatos();
+            CargarHorarios();
         }
 
         private void button2_Click(object sender, EventArgs e)
