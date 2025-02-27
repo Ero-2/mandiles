@@ -853,9 +853,9 @@
             this.label3.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(180, 67);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(161, 16);
+            this.label3.Size = new System.Drawing.Size(146, 16);
             this.label3.TabIndex = 69;
-            this.label3.Text = "CAJA FLOTADA";
+            this.label3.Text = "FLOTAR CAJA";
             // 
             // Form1
             // 
@@ -934,7 +934,6 @@
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

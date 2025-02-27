@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
 
 namespace mandiles
 {
@@ -416,15 +417,14 @@ namespace mandiles
             ReasignarEmpacadores(empacadoresSinCaja);
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            
         }
+
+        
     }
 
 }

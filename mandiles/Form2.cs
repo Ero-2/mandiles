@@ -202,6 +202,11 @@ namespace mandiles
             MostrarEmpacadoresDelDia();
             CargarDatos();
         }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            MostrarEmpacadoresDelDia();
+        }
     }
 
 
