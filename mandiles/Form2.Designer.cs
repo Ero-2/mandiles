@@ -37,6 +37,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.clbAusencias = new System.Windows.Forms.CheckedListBox();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -66,7 +67,6 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(263, 20);
             this.textBox1.TabIndex = 3;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label3
             // 
@@ -92,7 +92,7 @@
             // lbAsignadosHoy
             // 
             this.lbAsignadosHoy.FormattingEnabled = true;
-            this.lbAsignadosHoy.Location = new System.Drawing.Point(12, 130);
+            this.lbAsignadosHoy.Location = new System.Drawing.Point(12, 174);
             this.lbAsignadosHoy.Name = "lbAsignadosHoy";
             this.lbAsignadosHoy.Size = new System.Drawing.Size(276, 134);
             this.lbAsignadosHoy.TabIndex = 6;
@@ -119,16 +119,24 @@
             // clbAusencias
             // 
             this.clbAusencias.FormattingEnabled = true;
-            this.clbAusencias.Location = new System.Drawing.Point(19, 284);
+            this.clbAusencias.Location = new System.Drawing.Point(12, 325);
             this.clbAusencias.Name = "clbAusencias";
-            this.clbAusencias.Size = new System.Drawing.Size(120, 94);
+            this.clbAusencias.Size = new System.Drawing.Size(270, 109);
             this.clbAusencias.TabIndex = 9;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(12, 148);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(276, 20);
+            this.dateTimePicker1.TabIndex = 10;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.clbAusencias);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button1);
@@ -158,5 +166,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.CheckedListBox clbAusencias;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
     }
 }
