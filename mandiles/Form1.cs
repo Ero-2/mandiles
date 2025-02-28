@@ -26,7 +26,7 @@ namespace mandiles
         {
             InitializeComponent();
             InicializarDiccionarios();
-            InicializarComboBox();  
+            InicializarComboBox();
 
         }
 
@@ -54,6 +54,7 @@ namespace mandiles
 
         private void InicializarComboBox()
         {
+
             for (int i = 1; i <= 15; i++)
             {
                 comboBox1.Items.Add($"Caja {i}");
@@ -63,6 +64,7 @@ namespace mandiles
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             comboBox3.SelectedIndexChanged += comboBox3_SelectedIndexChanged;
+            comboBox4.SelectedIndexChanged += comboBox4_SelectedIndexChanged;
         }
 
         private void CambiarColorCaja(string cajaName, Color color)
@@ -71,14 +73,7 @@ namespace mandiles
                 cajas[cajaName].BackColor = color;
         }
 
-        private void OpenCaja(string nombreCaja)
-        {
-            if (!cajass.ContainsKey(nombreCaja)) return;
-            Caja caja = cajass[nombreCaja];
-            caja.IsOpen = true;
-            caja.MainLabel.BackColor = Color.Green;
-            caja.UpdateUI();
-        }
+
 
         private void CloseCaja(string nombreCaja)
         {
@@ -97,7 +92,6 @@ namespace mandiles
             // REASIGNAMOS (solo una vez)
             ReasignarEmpacadores(empacadoresAReasignar);
         }
-
 
 
         private void ReasignarEmpacadores(List<string> empacadores)
@@ -314,6 +308,9 @@ namespace mandiles
                 // Agregar la caja al ComboBox3 si no está presente
                 if (!comboBox3.Items.Contains(cajaReabierta))
                     comboBox3.Items.Add(cajaReabierta);
+                // Agregar la caja al ComboBox3 si no está presente
+                if (!comboBox4.Items.Contains(cajaReabierta))
+                    comboBox4.Items.Add(cajaReabierta);
             }
 
 
@@ -342,7 +339,7 @@ namespace mandiles
 
             Caja cajaCierre = cajass[selectedCaja];
 
-           
+
 
             // Preguntamos si el cierre será mayor a 45 minutos
             var resultt = MessageBox.Show("¿El cierre será mayor a 45 minutos?",
@@ -417,14 +414,99 @@ namespace mandiles
             ReasignarEmpacadores(empacadoresSinCaja);
         }
 
-        
+
 
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            // Verificar si hay una caja seleccionada en el ComboBox4
+            if (comboBox4.SelectedItem == null)
+            {
+                MessageBox.Show("Seleccione una caja en ComboBox4.");
+                return;
+            }
+
+            string selectedCaja = comboBox4.SelectedItem.ToString();
+
+            // 1. Validar existencia de la caja seleccionada en el diccionario
+            if (!cajass.ContainsKey(selectedCaja))
+            {
+                MessageBox.Show("La caja seleccionada no existe.");
+                return;
+            }
+
+            // 2. Verificar si la caja está abierta
+            Caja cajaAbierta = cajass[selectedCaja];
+            if (!cajaAbierta.IsOpen)
+            {
+                MessageBox.Show("La caja seleccionada no está abierta.");
+                return;
+            }
+
+            // 3. Obtener cajas cerradas
+            var cajasCerradas = cajass.Where(c => !c.Value.IsOpen).Select(c => c.Key).ToList();
+
+            if (cajasCerradas.Count == 0)
+            {
+                MessageBox.Show("No hay cajas cerradas para flotar.");
+                return;
+            }
+
+            // Mostrar el formulario para seleccionar una caja cerrada
+            using (var form = new SeleccionarCajaForm(cajasCerradas))
+            {
+                var resultado = form.ShowDialog();
+
+                if (resultado == DialogResult.Cancel)
+                {
+                    return;  // El usuario canceló el proceso
+                }
+
+                string cajaFlotada = form.CajaSeleccionada; // Obtener la caja seleccionada
+
+                if (!cajass.ContainsKey(cajaFlotada) || cajass[cajaFlotada].IsOpen)
+                {
+                    MessageBox.Show("La caja seleccionada para flotar no está cerrada.");
+                    return;
+                }
+
+                // 4. Transferir empacadores
+                Caja cajaFlotadaObj = cajass[cajaFlotada];
+
+                // Copiar los empacadores de la caja abierta a la caja flotada
+                cajaFlotadaObj.Empacadores.AddRange(cajaAbierta.Empacadores);
+
+                // Limpiar los empacadores de la caja original
+                cajaAbierta.Empacadores.Clear();
+
+                // 5. Cambiar color de la caja flotada
+                cajaFlotadaObj.MainLabel.BackColor = Color.SkyBlue;
+
+                // 6. Actualizar la UI
+                comboBox4.Items.Remove(selectedCaja);
+                comboBox4.Items.Add(cajaFlotada);
+
+                // 7. Actualizar estados correctamente
+                cajaAbierta.IsOpen = false;
+                cajaAbierta.MainLabel.BackColor = Color.Gray; // Marcar la caja original como cerrada
+
+                cajaFlotadaObj.IsOpen = true; // Marcar la caja flotada como abierta
+
+                // 8. Confirmar flotación
+                MessageBox.Show($"La caja {selectedCaja} ha sido flotada a la caja {cajaFlotada}.");
+
+                // 9. Actualizar la UI de ambas cajas
+                cajaAbierta.UpdateUI();
+                cajaFlotadaObj.UpdateUI();
+
+                // 10. Mover la caja original al ComboBox1
+                MoverCaja(comboBox4, comboBox1, selectedCaja);
+            }
+
+
         }
 
-        
+
     }
+
 
 }
