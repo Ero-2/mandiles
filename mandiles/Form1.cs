@@ -10,11 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
+using MaterialSkin;
 
 namespace mandiles
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form 
     {
+        private Label labelConBorde;
+       
 
         private Dictionary<string, Label> cajas = new Dictionary<string, Label>();
         private Dictionary<string, List<Label>> asignacionLabels = new Dictionary<string, List<Label>>();
@@ -505,7 +508,47 @@ namespace mandiles
 
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
 
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnCerrar_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void BtnMinimizarMaximizar_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Maximized;
+            BtnRestaurar.Visible = true;
+            BtnMaximizar.Visible = false;
+
+
+        }
+
+        private void BtnRestaurar_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+            BtnRestaurar.Visible = false;
+            BtnMaximizar.Visible = true;
+        }
+
+        private void BtnMinimizar_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+           lbHora.Text = DateTime.Now.ToLongTimeString();
+            lbfecha.Text = DateTime.Now.ToLongDateString();
+        }
     }
 
 
