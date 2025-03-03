@@ -25,6 +25,10 @@ namespace mandiles
             form1 = mainForm;
             EmpacadoresHorario = new Empacadores();
             CargarDatos();
+
+            dataGridView1.RowValidated += dataGridView1_RowValidated;
+            dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
+            dataGridView1.UserDeletingRow += dataGridView1_UserDeletingRow;
         }
 
         private void CargarDatos()
@@ -206,6 +210,108 @@ namespace mandiles
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             MostrarEmpacadoresDelDia();
+        }
+
+        private void dataGridView1_RowValidated(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView1.Rows[e.RowIndex].IsNewRow) return; // No procesar filas nuevas vacías
+
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+
+                string empacador = dataGridView1.Rows[e.RowIndex].Cells["Empacador"].Value?.ToString();
+                if (string.IsNullOrEmpty(empacador)) return; // Evita procesar datos nulos o vacíos
+
+                // Verificar si el empacador ya existe en la base de datos
+                string checkQuery = "SELECT COUNT(*) FROM HorarioEmpacadores WHERE Empacador = @Empacador";
+                using (SQLiteCommand checkCmd = new SQLiteCommand(checkQuery, conn))
+                {
+                    checkCmd.Parameters.AddWithValue("@Empacador", empacador);
+                    int count = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                    if (count == 0) // Si no existe, INSERT
+                    {
+                        string insertQuery = "INSERT INTO HorarioEmpacadores (Empacador, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo) " +
+                                            "VALUES (@Empacador, @Lunes, @Martes, @Miercoles, @Jueves, @Viernes, @Sabado, @Domingo)";
+                        using (SQLiteCommand cmd = new SQLiteCommand(insertQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Empacador", empacador);
+                            cmd.Parameters.AddWithValue("@Lunes", dataGridView1.Rows[e.RowIndex].Cells["Lunes"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Martes", dataGridView1.Rows[e.RowIndex].Cells["Martes"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Miercoles", dataGridView1.Rows[e.RowIndex].Cells["Miercoles"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Jueves", dataGridView1.Rows[e.RowIndex].Cells["Jueves"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Viernes", dataGridView1.Rows[e.RowIndex].Cells["Viernes"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Sabado", dataGridView1.Rows[e.RowIndex].Cells["Sabado"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Domingo", dataGridView1.Rows[e.RowIndex].Cells["Domingo"].Value ?? "DESCANSO");
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    else // Si ya existe, UPDATE
+                    {
+                        string updateQuery = "UPDATE HorarioEmpacadores SET " +
+                                             "Lunes = @Lunes, Martes = @Martes, Miercoles = @Miercoles, Jueves = @Jueves, " +
+                                             "Viernes = @Viernes, Sabado = @Sabado, Domingo = @Domingo " +
+                                             "WHERE Empacador = @Empacador";
+
+                        using (SQLiteCommand cmd = new SQLiteCommand(updateQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Empacador", empacador);
+                            cmd.Parameters.AddWithValue("@Lunes", dataGridView1.Rows[e.RowIndex].Cells["Lunes"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Martes", dataGridView1.Rows[e.RowIndex].Cells["Martes"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Miercoles", dataGridView1.Rows[e.RowIndex].Cells["Miercoles"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Jueves", dataGridView1.Rows[e.RowIndex].Cells["Jueves"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Viernes", dataGridView1.Rows[e.RowIndex].Cells["Viernes"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Sabado", dataGridView1.Rows[e.RowIndex].Cells["Sabado"].Value ?? "DESCANSO");
+                            cmd.Parameters.AddWithValue("@Domingo", dataGridView1.Rows[e.RowIndex].Cells["Domingo"].Value ?? "DESCANSO");
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string query = "UPDATE HorarioEmpacadores SET " +
+                               dataGridView1.Columns[e.ColumnIndex].Name + " = @valor " +
+                               "WHERE Empacador = @Empacador";
+
+                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@valor", dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    cmd.Parameters.AddWithValue("@Empacador", dataGridView1.Rows[e.RowIndex].Cells["Empacador"].Value);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este registro?", "Confirmación", MessageBoxButtons.YesNo);
+            if (result == DialogResult.No)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string query = "DELETE FROM HorarioEmpacadores WHERE Empacador = @Empacador";
+
+                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Empacador", e.Row.Cells["Empacador"].Value);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 

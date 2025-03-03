@@ -14,22 +14,25 @@ using MaterialSkin;
 
 namespace mandiles
 {
-    public partial class Form1 : Form 
+    public partial class Form1 : Form
     {
-        private Label labelConBorde;
-       
+
+
 
         private Dictionary<string, Label> cajas = new Dictionary<string, Label>();
         private Dictionary<string, List<Label>> asignacionLabels = new Dictionary<string, List<Label>>();
         private Dictionary<Label, List<string>> asignaciones = new Dictionary<Label, List<string>>();
         private Dictionary<string, Caja> cajass = new Dictionary<string, Caja>();
         private Dictionary<string, List<string>> temporalClosureEmpacadores = new Dictionary<string, List<string>>();
+        private Dictionary<Label, (Size, float, Point)> labelOriginalData = new Dictionary<Label, (Size, float, Point)>();
 
         public Form1()
         {
             InitializeComponent();
             InicializarDiccionarios();
             InicializarComboBox();
+            this.Resize += new EventHandler(Form1_Resize);
+            this.Load += Form1_Load; 
 
         }
 
@@ -92,50 +95,53 @@ namespace mandiles
             cajaCerrada.MainLabel.BackColor = Color.Transparent;
             cajaCerrada.UpdateUI();
 
-            // REASIGNAMOS (solo una vez)
+            
+
+            RegistrarCambio($"La {nombreCaja} fue cerrada. Empacadores reasignados: {string.Join(", ", empacadoresAReasignar)}");
+
+            // REASIGNAMOS
             ReasignarEmpacadores(empacadoresAReasignar);
         }
 
 
         private void ReasignarEmpacadores(List<string> empacadores)
         {
-            // Solo cajas que están abiertas (IsOpen = true)
-            var openCajas = cajass.Values
-                                  .Where(c => c.IsOpen)
-                                  .OrderBy(c => c.Empacadores.Count)
-                                  .ToList();
+            var openCajas = cajass.Values.Where(c => c.IsOpen).OrderBy(c => c.Empacadores.Count).ToList();
 
             if (!openCajas.Any())
             {
-                MessageBox.Show("No hay cajas abiertas para reasignar empacadores.");
+                RegistrarCambio("No hay cajas abiertas para reasignar empacadores.");
                 return;
             }
 
-            // Recorremos una copia de la lista para evitar la excepción de “colección modificada”
-            var copiaEmpacadores = new List<string>(empacadores);
-
-            foreach (var emp in copiaEmpacadores)
+            foreach (var emp in empacadores)
             {
-                bool reasignado = false;
                 foreach (var caja in openCajas)
                 {
-                    // Buscamos una caja con espacio (3 o el límite que manejes)
                     if (caja.Empacadores.Count < 3)
                     {
                         caja.Empacadores.Add(emp);
-                        reasignado = true;
-
-                        // Actualizar UI
                         caja.UpdateUI();
 
-                        // Opcional: Cambiar color de label, etc.
+                        RegistrarCambio($"{emp} fue reasignado a {caja.Nombre}");
                         break;
                     }
                 }
-                // Si no se reasignó, puedes hacer algo extra (lista de espera, mensaje, etc.)
             }
         }
 
+
+        private void RegistrarCambio(string mensaje)
+        {
+            if (txtRegistroCambios.InvokeRequired)
+            {
+                txtRegistroCambios.Invoke(new Action(() => RegistrarCambio(mensaje)));
+            }
+            else
+            {
+                txtRegistroCambios.AppendText($"{DateTime.Now:HH:mm:ss} - {mensaje}\r\n");
+            }
+        }
 
 
 
@@ -193,6 +199,8 @@ namespace mandiles
                             labelsCaja[i].Visible = false;
                         }
                     }
+
+                    RefrescarEmpacadoresAsignados();
                 }
 
                 // -----------------------------------------------------
@@ -250,6 +258,28 @@ namespace mandiles
                 }
             }
         }
+
+        private void RefrescarEmpacadoresAsignados()
+        {
+            // Limpia la lista actual
+            clbEmpacadoresForm1.Items.Clear();
+
+            // Recorre todas las cajas y añade los empacadores que estén asignados.
+            // (Si quieres evitar duplicados, chequea antes de agregarlos)
+            foreach (var cajaKvp in cajass)
+            {
+                Caja caja = cajaKvp.Value;
+                foreach (var emp in caja.Empacadores)
+                {
+                    if (!clbEmpacadoresForm1.Items.Contains(emp))
+                    {
+                        // Lo agregamos marcado (Checked) para indicar que está “activo”
+                        clbEmpacadoresForm1.Items.Add(emp, true);
+                    }
+                }
+            }
+        }
+
 
 
 
@@ -510,7 +540,25 @@ namespace mandiles
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.WindowState = FormWindowState.Normal;
+            this.AutoScaleMode = AutoScaleMode.None; // Evitar escalado automático
 
+            foreach (Control ctrl in this.Controls)
+            {
+                if (ctrl is Label lbl)
+                {
+                    // Configurar propiedades iniciales
+                    lbl.AutoSize = false;
+                    lbl.AutoEllipsis = false;
+                    lbl.Visible = true;
+
+                    // Guardar datos originales (tamaño, fuente y posición absoluta)
+                    labelOriginalData[lbl] = (lbl.Size, lbl.Font.Size, lbl.Location);
+                }
+            }
+
+            // Forzar el ajuste inicial
+            AdjustLabels();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -546,8 +594,69 @@ namespace mandiles
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-           lbHora.Text = DateTime.Now.ToLongTimeString();
+            lbHora.Text = DateTime.Now.ToLongTimeString();
             lbfecha.Text = DateTime.Now.ToLongDateString();
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            AdjustLabels();
+
+        }
+
+        private void AdjustLabels()
+        {
+            if (this.WindowState == FormWindowState.Minimized) return;
+
+            foreach (Control ctrl in this.Controls)
+            {
+                if (ctrl is Label lbl && labelOriginalData.ContainsKey(lbl))
+                {
+                    var (originalSize, originalFontSize, originalLocation) = labelOriginalData[lbl];
+
+                    if (this.WindowState == FormWindowState.Maximized)
+                    {
+                        // Aumentar tamaño y fuente en 30%
+                        lbl.Size = new Size((int)(originalSize.Width * 1.3), (int)(originalSize.Height * 1.3));
+                        lbl.Font = new Font(lbl.Font.FontFamily, originalFontSize * 1.3f, lbl.Font.Style);
+                        // Mantener posición absoluta proporcional
+                        lbl.Location = new Point(
+                            (int)(originalLocation.X * 1.3),
+                            (int)(originalLocation.Y * 1.3)
+                        );
+                    }
+                    else
+                    {
+                        // Restaurar valores originales
+                        lbl.Size = originalSize;
+                        lbl.Font = new Font(lbl.Font.FontFamily, originalFontSize, lbl.Font.Style);
+                        lbl.Location = originalLocation;
+                    }
+                }
+            }
+        }
+
+        private void clbEmpacadoresForm1_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            // Sólo actuar si se desmarca (es decir, pasa de Checked a Unchecked)
+            if (e.NewValue == CheckState.Unchecked)
+            {
+                // Obtener el empacador que se está desmarcando
+                string empacador = clbEmpacadoresForm1.Items[e.Index].ToString();
+
+                // Removerlo de todas las cajas donde aparezca
+                foreach (var cajaObj in cajass.Values)
+                {
+                    if (cajaObj.Empacadores.Contains(empacador))
+                    {
+                        cajaObj.Empacadores.Remove(empacador);
+                        cajaObj.UpdateUI(); // Para limpiar el label en pantalla
+                        RegistrarCambio($"{empacador} se retira de {cajaObj.Nombre}");
+                    }
+                }
+
+                MessageBox.Show($"El empacador {empacador} ha sido retirado de todas las cajas.");
+            }
         }
     }
 
