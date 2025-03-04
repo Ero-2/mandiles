@@ -79,18 +79,7 @@ namespace mandiles
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string nombreEmpacador = textBox1.Text.Trim();
-            if (!string.IsNullOrEmpty(nombreEmpacador) && !lbAsignadosHoy.Items.Contains(nombreEmpacador))
-            {
-                lbAsignadosHoy.Items.Add(nombreEmpacador);
-            }
-            else
-            {
-                MessageBox.Show("Por favor, ingrese un nombre válido o uno que no esté repetido.");
-            }
-        }
+        
 
         private void button1_Click_1(object sender, EventArgs e)
         {
@@ -114,7 +103,9 @@ namespace mandiles
 
             var horariosDict = EmpacadoresHorario.ObtenerHorario();
             List<string> empacadoresHoy = horariosDict
-                .Where(emp => emp.Value.ContainsKey(diaActual) && emp.Value[diaActual].ToUpper() != "DESCANSO")
+                .Where(emp => emp.Value.ContainsKey(diaActual)
+                              && !string.IsNullOrWhiteSpace(emp.Value[diaActual]) // No vacío
+                              && emp.Value[diaActual].ToUpper() != "DESCANSO") // No en descanso
                 .Select(emp => emp.Key).ToList();
 
             if (empacadoresHoy.Count == 0)
@@ -313,12 +304,94 @@ namespace mandiles
                 }
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)  // Verificar si hay una fila seleccionada
+            {
+                string empacador = dataGridView1.SelectedRows[0].Cells["Empacador"].Value?.ToString();
+
+                if (!string.IsNullOrEmpty(empacador))
+                {
+                    DialogResult confirmacion = MessageBox.Show(
+                        $"¿Estás seguro de eliminar a {empacador}?",
+                        "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (confirmacion == DialogResult.Yes)
+                    {
+                        EliminarRegistro(empacador);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, selecciona un registro antes de eliminar.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void EliminarRegistro(string empacador)
+        {
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "DELETE FROM HorarioEmpacadores WHERE Empacador = @Empacador";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Empacador", empacador);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show($"El empacador {empacador} ha sido eliminado.");
+                CargarDatos(); // Refrescar el DataGridView después de eliminar
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar: " + ex.Message);
+            }
+        }
+
+        private void BtnCerrar_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void BtnMinimizarMaximizar_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Maximized;
+            BtnRestaurar.Visible = true;
+            BtnMaximizar.Visible = false;
+
+        }
+
+        private void BtnRestaurar_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+            BtnRestaurar.Visible = false;
+            BtnMaximizar.Visible = true;
+        }
+
+        private void BtnMinimizar_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+
+        }
+
     }
 
-
-
-
 }
+
+
+
+
+
+
+
+
 
 
 

@@ -621,8 +621,8 @@ namespace mandiles
                         lbl.Font = new Font(lbl.Font.FontFamily, originalFontSize * 1.3f, lbl.Font.Style);
                         // Mantener posición absoluta proporcional
                         lbl.Location = new Point(
-                            (int)(originalLocation.X * 1.3),
-                            (int)(originalLocation.Y * 1.3)
+                            (int)(originalLocation.X * 1.7),
+                            (int)(originalLocation.Y * 1.7)
                         );
                     }
                     else
@@ -657,6 +657,11 @@ namespace mandiles
 
                 MessageBox.Show($"El empacador {empacador} ha sido retirado de todas las cajas.");
             }
+        }
+
+        private void label62_Click(object sender, EventArgs e)
+        {
+
         }
     }
 
