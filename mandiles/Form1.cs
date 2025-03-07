@@ -17,7 +17,7 @@ namespace mandiles
     public partial class Form1 : Form
     {
 
-
+       
 
         private Dictionary<string, Label> cajas = new Dictionary<string, Label>();
         private Dictionary<string, List<Label>> asignacionLabels = new Dictionary<string, List<Label>>();
@@ -31,8 +31,7 @@ namespace mandiles
             InitializeComponent();
             InicializarDiccionarios();
             InicializarComboBox();
-            this.Resize += new EventHandler(Form1_Resize);
-            this.Load += Form1_Load; 
+           
 
         }
 
@@ -344,6 +343,12 @@ namespace mandiles
                 // Agregar la caja al ComboBox3 si no está presente
                 if (!comboBox4.Items.Contains(cajaReabierta))
                     comboBox4.Items.Add(cajaReabierta);
+
+                RegistrarCambio($"{DateTime.Now:HH:mm:ss} - La caja {cajaReabierta} fue reabierta.");
+                foreach (var emp in cajass[cajaReabierta].Empacadores)
+                {
+                    RegistrarCambio($"{DateTime.Now:HH:mm:ss} - El empacador {emp} ha sido reasignado a la caja {cajaReabierta}.");
+                }
             }
 
 
@@ -410,6 +415,11 @@ namespace mandiles
             // Mover la caja al comboBox correspondiente si quieres (opcional)
             MoverCaja(comboBox3, comboBox1, selectedCaja);
 
+            RegistrarCambio($"{DateTime.Now:HH:mm:ss} - La caja {selectedCaja} fue cerrada temporalmente.");
+            foreach (var emp in temporalClosureEmpacadores[selectedCaja])
+            {
+                RegistrarCambio($"{DateTime.Now:HH:mm:ss} - El empacador {emp} fue reasignado debido al cierre temporal de la caja {selectedCaja}.");
+            }
         }
 
         public List<Label> ObtenerCajasAbiertas()
@@ -430,6 +440,10 @@ namespace mandiles
             Form2 form2 = new Form2(this);
             form2.Show();
         }
+
+        
+        
+
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -533,32 +547,32 @@ namespace mandiles
 
                 // 10. Mover la caja original al ComboBox1
                 MoverCaja(comboBox4, comboBox1, selectedCaja);
+
+                RegistrarCambio($"{DateTime.Now:HH:mm:ss} - La caja {selectedCaja} fue flotada a la caja {cajaFlotada}.");
+                foreach (var emp in cajaFlotadaObj.Empacadores)
+                {
+                    RegistrarCambio($"{DateTime.Now:HH:mm:ss} - El empacador {emp} fue trasladado de {selectedCaja} a {cajaFlotada}.");
+                }
             }
 
 
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Normal;
-            this.AutoScaleMode = AutoScaleMode.None; // Evitar escalado automático
-
-            foreach (Control ctrl in this.Controls)
+        {// Centrar los TableLayoutPanel dentro del Panel
+            foreach (Control control in panel1.Controls)
             {
-                if (ctrl is Label lbl)
+                if (control is TableLayoutPanel)
                 {
-                    // Configurar propiedades iniciales
-                    lbl.AutoSize = false;
-                    lbl.AutoEllipsis = false;
-                    lbl.Visible = true;
-
-                    // Guardar datos originales (tamaño, fuente y posición absoluta)
-                    labelOriginalData[lbl] = (lbl.Size, lbl.Font.Size, lbl.Location);
+                    TableLayoutPanel tableLayout = (TableLayoutPanel)control;
+                    tableLayout.Anchor = AnchorStyles.None; // Quitar anclajes para centrar
+                    tableLayout.Location = new Point(
+                        (panel1.ClientSize.Width - tableLayout.Width) / 5,
+                        (panel1.ClientSize.Height - tableLayout.Height) / 5);
                 }
             }
 
-            // Forzar el ajuste inicial
-            AdjustLabels();
+
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -600,41 +614,11 @@ namespace mandiles
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            AdjustLabels();
+           
 
         }
 
-        private void AdjustLabels()
-        {
-            if (this.WindowState == FormWindowState.Minimized) return;
-
-            foreach (Control ctrl in this.Controls)
-            {
-                if (ctrl is Label lbl && labelOriginalData.ContainsKey(lbl))
-                {
-                    var (originalSize, originalFontSize, originalLocation) = labelOriginalData[lbl];
-
-                    if (this.WindowState == FormWindowState.Maximized)
-                    {
-                        // Aumentar tamaño y fuente en 30%
-                        lbl.Size = new Size((int)(originalSize.Width * 1.3), (int)(originalSize.Height * 1.3));
-                        lbl.Font = new Font(lbl.Font.FontFamily, originalFontSize * 1.3f, lbl.Font.Style);
-                        // Mantener posición absoluta proporcional
-                        lbl.Location = new Point(
-                            (int)(originalLocation.X * 1.7),
-                            (int)(originalLocation.Y * 1.7)
-                        );
-                    }
-                    else
-                    {
-                        // Restaurar valores originales
-                        lbl.Size = originalSize;
-                        lbl.Font = new Font(lbl.Font.FontFamily, originalFontSize, lbl.Font.Style);
-                        lbl.Location = originalLocation;
-                    }
-                }
-            }
-        }
+      
 
         private void clbEmpacadoresForm1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
@@ -660,6 +644,31 @@ namespace mandiles
         }
 
         private void label62_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel15_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel2_Resize(object sender, EventArgs e)
+        {
+            // Centrar los TableLayoutPanel dentro del Panel cuando se redimensiona
+            foreach (Control control in panel1.Controls)
+            {
+                if (control is TableLayoutPanel)
+                {
+                    TableLayoutPanel tableLayout = (TableLayoutPanel)control;
+                    tableLayout.Location = new Point(
+                        (panel1.ClientSize.Width - tableLayout.Width) / 5,
+                        (panel1.ClientSize.Height - tableLayout.Height) / 5);
+                }
+            }
+        }
+
+        private void lbHora_Click(object sender, EventArgs e)
         {
 
         }

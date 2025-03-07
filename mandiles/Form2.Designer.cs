@@ -74,10 +74,14 @@
             // 
             // lbAsignadosHoy
             // 
+            this.lbAsignadosHoy.BackColor = System.Drawing.Color.SlateGray;
+            this.lbAsignadosHoy.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbAsignadosHoy.ForeColor = System.Drawing.Color.Transparent;
             this.lbAsignadosHoy.FormattingEnabled = true;
+            this.lbAsignadosHoy.ItemHeight = 15;
             this.lbAsignadosHoy.Location = new System.Drawing.Point(3, 117);
             this.lbAsignadosHoy.Name = "lbAsignadosHoy";
-            this.lbAsignadosHoy.Size = new System.Drawing.Size(276, 134);
+            this.lbAsignadosHoy.Size = new System.Drawing.Size(276, 124);
             this.lbAsignadosHoy.TabIndex = 6;
             // 
             // button1
@@ -100,6 +104,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.GridColor = System.Drawing.SystemColors.Highlight;
             this.dataGridView1.Location = new System.Drawing.Point(378, 102);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(669, 328);
@@ -110,6 +115,9 @@
             // 
             // clbAusencias
             // 
+            this.clbAusencias.BackColor = System.Drawing.Color.SlateGray;
+            this.clbAusencias.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.clbAusencias.ForeColor = System.Drawing.SystemColors.InactiveBorder;
             this.clbAusencias.FormattingEnabled = true;
             this.clbAusencias.Location = new System.Drawing.Point(3, 257);
             this.clbAusencias.Name = "clbAusencias";
@@ -118,16 +126,19 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(3, 91);
+            this.dateTimePicker1.CalendarFont = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker1.CalendarForeColor = System.Drawing.Color.Transparent;
+            this.dateTimePicker1.CalendarMonthBackground = System.Drawing.Color.SlateGray;
+            this.dateTimePicker1.Location = new System.Drawing.Point(0, 80);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(276, 20);
+            this.dateTimePicker1.Size = new System.Drawing.Size(279, 20);
             this.dateTimePicker1.TabIndex = 10;
             this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Akira Expanded", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(378, 436);
+            this.button2.Location = new System.Drawing.Point(528, 436);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(371, 22);
             this.button2.TabIndex = 11;

@@ -305,6 +305,44 @@ namespace mandiles
             }
         }
 
+        private void EliminarRegistro(string empacador)
+        {
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+                {
+                    // Abrir la conexión
+                    conn.Open();
+
+                    string query = "DELETE FROM HorarioEmpacadores WHERE Empacador = @Empacador";
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                    {
+                        // Añadir el parámetro para la consulta SQL
+                        cmd.Parameters.AddWithValue("@Empacador", empacador);
+
+                        // Ejecutar la consulta
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Registro eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            // Ahora elimina también la fila de la DataGridView
+                            dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No se pudo encontrar el registro en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al eliminar el registro: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
         private void button2_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)  // Verificar si hay una fila seleccionada
@@ -330,34 +368,11 @@ namespace mandiles
             }
         }
 
-        private void EliminarRegistro(string empacador)
-        {
-            try
-            {
-                using (SQLiteConnection conn = new SQLiteConnection(connectionString))
-                {
-                    conn.Open();
-                    string query = "DELETE FROM HorarioEmpacadores WHERE Empacador = @Empacador";
-
-                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@Empacador", empacador);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
-                MessageBox.Show($"El empacador {empacador} ha sido eliminado.");
-                CargarDatos(); // Refrescar el DataGridView después de eliminar
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al eliminar: " + ex.Message);
-            }
-        }
+      
 
         private void BtnCerrar_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            this.Close();
         }
 
         private void BtnMinimizarMaximizar_Click(object sender, EventArgs e)
