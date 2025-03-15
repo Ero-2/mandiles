@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
             this.caja1 = new System.Windows.Forms.Label();
             this.caja2 = new System.Windows.Forms.Label();
@@ -102,13 +103,11 @@
             this.BarraTitulo = new System.Windows.Forms.Panel();
             this.lbfecha = new System.Windows.Forms.Label();
             this.lbHora = new System.Windows.Forms.Label();
-            this.BtnRestaurar = new System.Windows.Forms.PictureBox();
-            this.BtnCerrar = new System.Windows.Forms.PictureBox();
-            this.BtnMaximizar = new System.Windows.Forms.PictureBox();
-            this.BtnMinimizar = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.clbEmpacadoresForm1 = new System.Windows.Forms.CheckedListBox();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.clbEmpacadoresForm1 = new System.Windows.Forms.CheckedListBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.horafecha = new System.Windows.Forms.Timer(this.components);
             this.txtRegistroCambios = new System.Windows.Forms.TextBox();
@@ -128,14 +127,9 @@
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.BarraTitulo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnRestaurar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnCerrar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnMaximizar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnMinimizar)).BeginInit();
             this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
@@ -154,7 +148,6 @@
             this.tableLayoutPanel14.SuspendLayout();
             this.tableLayoutPanel15.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -168,7 +161,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "MANDILES";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // caja1
             // 
@@ -341,9 +333,9 @@
             this.label17.BackColor = System.Drawing.SystemColors.Info;
             this.label17.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label17.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label17.Location = new System.Drawing.Point(64, 111);
+            this.label17.Location = new System.Drawing.Point(53, 111);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(72, 20);
+            this.label17.Size = new System.Drawing.Size(94, 21);
             this.label17.TabIndex = 17;
             this.label17.Text = "label17";
             this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -354,9 +346,9 @@
             this.label18.BackColor = System.Drawing.SystemColors.Info;
             this.label18.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label18.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label18.Location = new System.Drawing.Point(55, 85);
+            this.label18.Location = new System.Drawing.Point(50, 87);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(89, 25);
+            this.label18.Size = new System.Drawing.Size(99, 20);
             this.label18.TabIndex = 18;
             this.label18.Text = "label18";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -892,13 +884,13 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.SlateGray;
+            this.button1.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.button1.FlatAppearance.BorderColor = System.Drawing.Color.LightSlateGray;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Daydream", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button1.Location = new System.Drawing.Point(39, 0);
+            this.button1.Location = new System.Drawing.Point(33, 0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(136, 28);
             this.button1.TabIndex = 67;
@@ -986,17 +978,12 @@
             this.label62.Size = new System.Drawing.Size(131, 16);
             this.label62.TabIndex = 62;
             this.label62.Text = "Abrir caja";
-            this.label62.Click += new System.EventHandler(this.label62_Click);
             // 
             // BarraTitulo
             // 
-            this.BarraTitulo.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.BarraTitulo.BackColor = System.Drawing.Color.Goldenrod;
             this.BarraTitulo.Controls.Add(this.lbfecha);
             this.BarraTitulo.Controls.Add(this.lbHora);
-            this.BarraTitulo.Controls.Add(this.BtnRestaurar);
-            this.BarraTitulo.Controls.Add(this.BtnCerrar);
-            this.BarraTitulo.Controls.Add(this.BtnMaximizar);
-            this.BarraTitulo.Controls.Add(this.BtnMinimizar);
             this.BarraTitulo.Controls.Add(this.label1);
             this.BarraTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.BarraTitulo.Location = new System.Drawing.Point(0, 0);
@@ -1022,7 +1009,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbHora.AutoSize = true;
-            this.lbHora.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.lbHora.BackColor = System.Drawing.Color.Transparent;
             this.lbHora.Font = new System.Drawing.Font("Arial Black", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbHora.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.lbHora.Location = new System.Drawing.Point(824, 5);
@@ -1030,61 +1017,10 @@
             this.lbHora.Size = new System.Drawing.Size(81, 27);
             this.lbHora.TabIndex = 4;
             this.lbHora.Text = "lbHora";
-            this.lbHora.Click += new System.EventHandler(this.lbHora_Click);
-            // 
-            // BtnRestaurar
-            // 
-            this.BtnRestaurar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnRestaurar.Image = global::mandiles.Properties.Resources.minimizar__2_;
-            this.BtnRestaurar.Location = new System.Drawing.Point(1199, 7);
-            this.BtnRestaurar.Name = "BtnRestaurar";
-            this.BtnRestaurar.Size = new System.Drawing.Size(27, 25);
-            this.BtnRestaurar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.BtnRestaurar.TabIndex = 3;
-            this.BtnRestaurar.TabStop = false;
-            this.BtnRestaurar.Visible = false;
-            this.BtnRestaurar.Click += new System.EventHandler(this.BtnRestaurar_Click);
-            // 
-            // BtnCerrar
-            // 
-            this.BtnCerrar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCerrar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BtnCerrar.Image = global::mandiles.Properties.Resources.boton_de_quitar_cuadrado__2_;
-            this.BtnCerrar.Location = new System.Drawing.Point(1232, 7);
-            this.BtnCerrar.Name = "BtnCerrar";
-            this.BtnCerrar.Size = new System.Drawing.Size(27, 25);
-            this.BtnCerrar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.BtnCerrar.TabIndex = 2;
-            this.BtnCerrar.TabStop = false;
-            this.BtnCerrar.Click += new System.EventHandler(this.BtnCerrar_Click);
-            // 
-            // BtnMaximizar
-            // 
-            this.BtnMaximizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnMaximizar.Image = global::mandiles.Properties.Resources.minimizar__1_;
-            this.BtnMaximizar.Location = new System.Drawing.Point(1199, 7);
-            this.BtnMaximizar.Name = "BtnMaximizar";
-            this.BtnMaximizar.Size = new System.Drawing.Size(27, 25);
-            this.BtnMaximizar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.BtnMaximizar.TabIndex = 1;
-            this.BtnMaximizar.TabStop = false;
-            this.BtnMaximizar.Click += new System.EventHandler(this.BtnMinimizarMaximizar_Click);
-            // 
-            // BtnMinimizar
-            // 
-            this.BtnMinimizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnMinimizar.Image = global::mandiles.Properties.Resources.minimizar;
-            this.BtnMinimizar.Location = new System.Drawing.Point(1166, 7);
-            this.BtnMinimizar.Name = "BtnMinimizar";
-            this.BtnMinimizar.Size = new System.Drawing.Size(27, 25);
-            this.BtnMinimizar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.BtnMinimizar.TabIndex = 0;
-            this.BtnMinimizar.TabStop = false;
-            this.BtnMinimizar.Click += new System.EventHandler(this.BtnMinimizar_Click);
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.SlateGray;
+            this.panel1.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.clbEmpacadoresForm1);
@@ -1103,15 +1039,14 @@
             this.panel1.Size = new System.Drawing.Size(188, 579);
             this.panel1.TabIndex = 71;
             // 
-            // clbEmpacadoresForm1
+            // panel3
             // 
-            this.clbEmpacadoresForm1.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.clbEmpacadoresForm1.FormattingEnabled = true;
-            this.clbEmpacadoresForm1.Location = new System.Drawing.Point(10, 397);
-            this.clbEmpacadoresForm1.Name = "clbEmpacadoresForm1";
-            this.clbEmpacadoresForm1.Size = new System.Drawing.Size(166, 174);
-            this.clbEmpacadoresForm1.TabIndex = 71;
-            this.clbEmpacadoresForm1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbEmpacadoresForm1_ItemCheck);
+            this.panel3.Controls.Add(this.button1);
+            this.panel3.Controls.Add(this.pictureBox2);
+            this.panel3.Location = new System.Drawing.Point(7, 316);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(166, 31);
+            this.panel3.TabIndex = 89;
             // 
             // pictureBox2
             // 
@@ -1123,10 +1058,30 @@
             this.pictureBox2.TabIndex = 70;
             this.pictureBox2.TabStop = false;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(19, 361);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(145, 32);
+            this.label5.TabIndex = 72;
+            this.label5.Text = "Marcar solamente cuando \r\n se le autorice su salida";
+            // 
+            // clbEmpacadoresForm1
+            // 
+            this.clbEmpacadoresForm1.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.clbEmpacadoresForm1.FormattingEnabled = true;
+            this.clbEmpacadoresForm1.Location = new System.Drawing.Point(10, 397);
+            this.clbEmpacadoresForm1.Name = "clbEmpacadoresForm1";
+            this.clbEmpacadoresForm1.Size = new System.Drawing.Size(166, 169);
+            this.clbEmpacadoresForm1.TabIndex = 71;
+            this.clbEmpacadoresForm1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbEmpacadoresForm1_ItemCheck);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::mandiles.Properties.Resources.IMG_0465;
-            this.pictureBox1.Location = new System.Drawing.Point(36, 15);
+            this.pictureBox1.Location = new System.Drawing.Point(22, 7);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(128, 96);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1142,7 +1097,7 @@
             // 
             this.txtRegistroCambios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.txtRegistroCambios.Font = new System.Drawing.Font("Arial Black", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRegistroCambios.Location = new System.Drawing.Point(764, 442);
+            this.txtRegistroCambios.Location = new System.Drawing.Point(752, 439);
             this.txtRegistroCambios.Multiline = true;
             this.txtRegistroCambios.Name = "txtRegistroCambios";
             this.txtRegistroCambios.ReadOnly = true;
@@ -1433,7 +1388,6 @@
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel15.Size = new System.Drawing.Size(200, 132);
             this.tableLayoutPanel15.TabIndex = 87;
-            this.tableLayoutPanel15.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel15_Paint);
             // 
             // panel2
             // 
@@ -1461,25 +1415,6 @@
             this.panel2.TabIndex = 88;
             this.panel2.Resize += new System.EventHandler(this.panel2_Resize);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(19, 361);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(145, 32);
-            this.label5.TabIndex = 72;
-            this.label5.Text = "Marcar solamente cuando \r\n se le autorice su salida";
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.button1);
-            this.panel3.Controls.Add(this.pictureBox2);
-            this.panel3.Location = new System.Drawing.Point(7, 316);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(166, 31);
-            this.panel3.TabIndex = 89;
-            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1487,19 +1422,15 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.BarraTitulo);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Mandiles";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.BarraTitulo.ResumeLayout(false);
             this.BarraTitulo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnRestaurar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnCerrar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnMaximizar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnMinimizar)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -1519,7 +1450,6 @@
             this.tableLayoutPanel15.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1597,11 +1527,7 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label62;
         private System.Windows.Forms.Panel BarraTitulo;
-        private System.Windows.Forms.PictureBox BtnMinimizar;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox BtnMaximizar;
-        private System.Windows.Forms.PictureBox BtnCerrar;
-        private System.Windows.Forms.PictureBox BtnRestaurar;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label lbfecha;

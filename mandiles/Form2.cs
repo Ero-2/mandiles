@@ -375,20 +375,8 @@ namespace mandiles
             this.Close();
         }
 
-        private void BtnMinimizarMaximizar_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Maximized;
-            BtnRestaurar.Visible = true;
-            BtnMaximizar.Visible = false;
-
-        }
-
-        private void BtnRestaurar_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Normal;
-            BtnRestaurar.Visible = false;
-            BtnMaximizar.Visible = true;
-        }
+      
+        
 
         private void BtnMinimizar_Click(object sender, EventArgs e)
         {
@@ -396,6 +384,10 @@ namespace mandiles
 
         }
 
+        private void BtnRestaurar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

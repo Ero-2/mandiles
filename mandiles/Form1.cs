@@ -24,7 +24,8 @@ namespace mandiles
         private Dictionary<Label, List<string>> asignaciones = new Dictionary<Label, List<string>>();
         private Dictionary<string, Caja> cajass = new Dictionary<string, Caja>();
         private Dictionary<string, List<string>> temporalClosureEmpacadores = new Dictionary<string, List<string>>();
-        private Dictionary<Label, (Size, float, Point)> labelOriginalData = new Dictionary<Label, (Size, float, Point)>();
+        
+        private string backupfile = "backup.json";
 
         public Form1()
         {
@@ -257,7 +258,6 @@ namespace mandiles
                 }
             }
         }
-
         private void RefrescarEmpacadoresAsignados()
         {
             // Limpia la lista actual
@@ -278,11 +278,6 @@ namespace mandiles
                 }
             }
         }
-
-
-
-
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -575,50 +570,12 @@ namespace mandiles
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnCerrar_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void BtnMinimizarMaximizar_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Maximized;
-            BtnRestaurar.Visible = true;
-            BtnMaximizar.Visible = false;
-
-
-        }
-
-        private void BtnRestaurar_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Normal;
-            BtnRestaurar.Visible = false;
-            BtnMaximizar.Visible = true;
-        }
-
-        private void BtnMinimizar_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
-        }
-
+ 
         private void timer1_Tick(object sender, EventArgs e)
         {
             lbHora.Text = DateTime.Now.ToLongTimeString();
             lbfecha.Text = DateTime.Now.ToLongDateString();
         }
-
-        private void Form1_Resize(object sender, EventArgs e)
-        {
-           
-
-        }
-
-      
 
         private void clbEmpacadoresForm1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
@@ -643,15 +600,7 @@ namespace mandiles
             }
         }
 
-        private void label62_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel15_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        
 
         private void panel2_Resize(object sender, EventArgs e)
         {
@@ -668,10 +617,7 @@ namespace mandiles
             }
         }
 
-        private void lbHora_Click(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 
 
