@@ -93,7 +93,6 @@
             this.label61 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label63 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
@@ -104,11 +103,14 @@
             this.lbfecha = new System.Windows.Forms.Label();
             this.lbHora = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label5 = new System.Windows.Forms.Label();
             this.clbEmpacadoresForm1 = new System.Windows.Forms.CheckedListBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label63 = new System.Windows.Forms.Label();
             this.horafecha = new System.Windows.Forms.Timer(this.components);
             this.txtRegistroCambios = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -890,7 +892,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Daydream", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button1.Location = new System.Drawing.Point(33, 0);
+            this.button1.Location = new System.Drawing.Point(30, 0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(136, 28);
             this.button1.TabIndex = 67;
@@ -902,27 +904,17 @@
             // 
             this.comboBox2.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(7, 287);
+            this.comboBox2.Location = new System.Drawing.Point(7, 260);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(166, 23);
             this.comboBox2.TabIndex = 63;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
-            // label63
-            // 
-            this.label63.AutoSize = true;
-            this.label63.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label63.Location = new System.Drawing.Point(12, 268);
-            this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(153, 16);
-            this.label63.TabIndex = 64;
-            this.label63.Text = "Cerrar caja";
-            // 
             // comboBox3
             // 
             this.comboBox3.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(7, 241);
+            this.comboBox3.Location = new System.Drawing.Point(7, 215);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(166, 23);
             this.comboBox3.TabIndex = 65;
@@ -932,7 +924,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(19, 209);
+            this.label2.Location = new System.Drawing.Point(19, 183);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(131, 32);
             this.label2.TabIndex = 66;
@@ -942,7 +934,7 @@
             // 
             this.comboBox4.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(3, 183);
+            this.comboBox4.Location = new System.Drawing.Point(3, 157);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(173, 23);
             this.comboBox4.TabIndex = 68;
@@ -952,7 +944,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(19, 164);
+            this.label3.Location = new System.Drawing.Point(19, 138);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(146, 16);
             this.label3.TabIndex = 69;
@@ -963,7 +955,7 @@
             this.comboBox1.Font = new System.Drawing.Font("Impact", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox1.ForeColor = System.Drawing.Color.Black;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(7, 133);
+            this.comboBox1.Location = new System.Drawing.Point(7, 104);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(166, 24);
             this.comboBox1.TabIndex = 1;
@@ -973,7 +965,7 @@
             // 
             this.label62.AutoSize = true;
             this.label62.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label62.Location = new System.Drawing.Point(19, 114);
+            this.label62.Location = new System.Drawing.Point(19, 85);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(131, 16);
             this.label62.TabIndex = 62;
@@ -1021,6 +1013,8 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.comboBox5);
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.clbEmpacadoresForm1);
@@ -1039,11 +1033,30 @@
             this.panel1.Size = new System.Drawing.Size(188, 579);
             this.panel1.TabIndex = 71;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(30, 284);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(120, 16);
+            this.label4.TabIndex = 90;
+            this.label4.Text = "DESCANSO";
+            // 
+            // comboBox5
+            // 
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(7, 303);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(170, 21);
+            this.comboBox5.TabIndex = 88;
+            this.comboBox5.SelectedIndexChanged += new System.EventHandler(this.comboBox5_SelectedIndexChanged);
+            // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.button1);
             this.panel3.Controls.Add(this.pictureBox2);
-            this.panel3.Location = new System.Drawing.Point(7, 316);
+            this.panel3.Controls.Add(this.button1);
+            this.panel3.Location = new System.Drawing.Point(10, 344);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(166, 31);
             this.panel3.TabIndex = 89;
@@ -1051,7 +1064,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::mandiles.Properties.Resources.trabajo_en_equipo;
-            this.pictureBox2.Location = new System.Drawing.Point(12, 2);
+            this.pictureBox2.Location = new System.Drawing.Point(2, 3);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(25, 26);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1062,17 +1075,17 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(19, 361);
+            this.label5.Location = new System.Drawing.Point(46, 379);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(145, 32);
+            this.label5.Size = new System.Drawing.Size(80, 16);
             this.label5.TabIndex = 72;
-            this.label5.Text = "Marcar solamente cuando \r\n se le autorice su salida";
+            this.label5.Text = "Marcar salida:";
             // 
             // clbEmpacadoresForm1
             // 
             this.clbEmpacadoresForm1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.clbEmpacadoresForm1.FormattingEnabled = true;
-            this.clbEmpacadoresForm1.Location = new System.Drawing.Point(10, 397);
+            this.clbEmpacadoresForm1.Location = new System.Drawing.Point(15, 398);
             this.clbEmpacadoresForm1.Name = "clbEmpacadoresForm1";
             this.clbEmpacadoresForm1.Size = new System.Drawing.Size(166, 169);
             this.clbEmpacadoresForm1.TabIndex = 71;
@@ -1081,12 +1094,22 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::mandiles.Properties.Resources.IMG_0465;
-            this.pictureBox1.Location = new System.Drawing.Point(22, 7);
+            this.pictureBox1.Location = new System.Drawing.Point(22, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(128, 96);
+            this.pictureBox1.Size = new System.Drawing.Size(151, 82);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 68;
             this.pictureBox1.TabStop = false;
+            // 
+            // label63
+            // 
+            this.label63.AutoSize = true;
+            this.label63.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label63.Location = new System.Drawing.Point(12, 241);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(153, 16);
+            this.label63.TabIndex = 64;
+            this.label63.Text = "Cerrar caja";
             // 
             // horafecha
             // 
@@ -1519,7 +1542,6 @@
         private System.Windows.Forms.Label label61;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.Label label63;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBox4;
@@ -1553,6 +1575,9 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.Label label63;
     }
 }
 

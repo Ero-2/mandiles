@@ -29,6 +29,7 @@ namespace mandiles
             dataGridView1.RowValidated += dataGridView1_RowValidated;
             dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
             dataGridView1.UserDeletingRow += dataGridView1_UserDeletingRow;
+            clbAusencias.ItemCheck += clbAusencias_ItemCheck;
         }
 
         private void CargarDatos()
@@ -386,6 +387,42 @@ namespace mandiles
 
         private void BtnRestaurar_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void clbAusencias_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void clbAusencias_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (e.NewValue == CheckState.Unchecked)
+            {
+                string empacador = clbAusencias.Items[e.Index].ToString();
+
+                // Deshabilitamos temporalmente el evento para evitar múltiples ejecuciones
+                clbAusencias.ItemCheck -= clbAusencias_ItemCheck;
+
+                DialogResult respuesta = MessageBox.Show(
+                    $"¿Estás seguro de incluir a {empacador} en las asignaciones?",
+                    "Confirmar inclusión",
+                    MessageBoxButtons.YesNo);
+
+                if (respuesta == DialogResult.Yes)
+                {
+                    Form1 form1 = Application.OpenForms["Form1"] as Form1;
+                    form1?.AgregarEmpacadorACajasDisponibles(empacador);
+                }
+                else
+                {
+                    // Restauramos el estado a "Checked" sin disparar nuevamente el evento
+                    clbAusencias.SetItemCheckState(e.Index, CheckState.Checked);
+                }
+
+                // Rehabilitamos el evento
+                clbAusencias.ItemCheck += clbAusencias_ItemCheck;
+            }
 
         }
     }

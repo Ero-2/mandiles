@@ -14,6 +14,8 @@ namespace mandiles
         public List<Label> AsignacionLabels { get; set; }
         public List<string> Empacadores { get; set; } = new List<string>();
         public bool IsOpen { get; set; } = false;
+        public bool IsOnBreak { get; set; } = false;
+
 
         public Caja(string nombre, Label mainLabel, List<Label> asignacionLabels)
         {
