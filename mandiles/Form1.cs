@@ -42,37 +42,6 @@ namespace mandiles
              // <-- Añade esta línea
            
         }
-
-       
-
-      
-
-        private void ActualizarComboBoxes()
-        {
-            comboBox1.Items.Clear();
-            comboBox2.Items.Clear();
-            comboBox3.Items.Clear();
-            comboBox4.Items.Clear();
-            comboBox5.Items.Clear();
-
-            foreach (var caja in cajass.Values)
-            {
-                if (!caja.IsOpen)
-                    comboBox1.Items.Add(caja.Nombre);
-                else if (caja.IsOnBreak)
-                    comboBox5.Items.Add(caja.Nombre);
-                else
-                    comboBox2.Items.Add(caja.Nombre);
-
-                // Añadir a otros ComboBoxes
-                if (!comboBox3.Items.Contains(caja.Nombre))
-                    comboBox3.Items.Add(caja.Nombre);
-                if (!comboBox4.Items.Contains(caja.Nombre))
-                    comboBox4.Items.Add(caja.Nombre);
-            }
-        }
-
-
         private void InicializarDiccionarios()
         {
             for (int i = 1; i <= 15; i++)
@@ -137,6 +106,7 @@ namespace mandiles
 
             // REASIGNAMOS
             ReasignarEmpacadores(empacadoresAReasignar);
+            BalancearEmpacadores();
         }
 
 
@@ -294,6 +264,43 @@ namespace mandiles
                 }
             }
         }
+
+        private void BalancearEmpacadores()
+        {
+            var cajasAbiertas = cajass.Values
+                .Where(c => c.IsOpen && !c.IsOnBreak)
+                .OrderBy(c => c.Empacadores.Count)
+                .ToList();
+
+            if (cajasAbiertas.Count < 1) return;
+
+            // Calcular la distribución ideal (máximo 2 por caja)
+            int totalEmpacadores = cajasAbiertas.Sum(c => c.Empacadores.Count);
+            int maxPorCaja = (int)Math.Ceiling((double)totalEmpacadores / cajasAbiertas.Count);
+
+            // Redistribuir empacadores
+            foreach (var caja in cajasAbiertas.Where(c => c.Empacadores.Count > maxPorCaja))
+            {
+                while (caja.Empacadores.Count > maxPorCaja)
+                {
+                    var empacador = caja.Empacadores.Last();
+                    caja.Empacadores.Remove(empacador);
+
+                    var cajaMenosOcupada = cajasAbiertas
+                        .Where(c => c.Empacadores.Count < maxPorCaja)
+                        .OrderBy(c => c.Empacadores.Count)
+                        .FirstOrDefault();
+
+                    if (cajaMenosOcupada != null)
+                    {
+                        cajaMenosOcupada.Empacadores.Add(empacador);
+                        RegistrarCambio($"{empacador} movido de {caja.Nombre} a {cajaMenosOcupada.Nombre} para balancear");
+                    }
+                }
+                caja.UpdateUI();
+            }
+        }
+
         private void RefrescarEmpacadoresAsignados()
         {
             clbEmpacadoresForm1.Items.Clear();
@@ -384,6 +391,8 @@ namespace mandiles
                     RegistrarCambio($"{DateTime.Now:HH:mm:ss} - {emp} reasignado a {cajaReabierta}");
                 }
             }
+
+            BalancearEmpacadores();
 
         }
 

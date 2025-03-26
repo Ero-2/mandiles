@@ -30,6 +30,7 @@ namespace mandiles
             dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
             dataGridView1.UserDeletingRow += dataGridView1_UserDeletingRow;
             clbAusencias.ItemCheck += clbAusencias_ItemCheck;
+            dataGridView1.RowEnter += dataGridView1_RowEnter;
         }
 
         private void CargarDatos()
@@ -206,64 +207,80 @@ namespace mandiles
 
         private void dataGridView1_RowValidated(object sender, DataGridViewCellEventArgs e)
         {
-            if (dataGridView1.Rows[e.RowIndex].IsNewRow) return; // No procesar filas nuevas vacías
+            if (dataGridView1.Rows[e.RowIndex].IsNewRow) return;
 
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
 
-                string empacador = dataGridView1.Rows[e.RowIndex].Cells["Empacador"].Value?.ToString();
-                if (string.IsNullOrEmpty(empacador)) return; // Evita procesar datos nulos o vacíos
+                string nuevoNombre = dataGridView1.Rows[e.RowIndex].Cells["Empacador"].Value?.ToString();
+                if (string.IsNullOrEmpty(nuevoNombre)) return;
 
-                // Verificar si el empacador ya existe en la base de datos
-                string checkQuery = "SELECT COUNT(*) FROM HorarioEmpacadores WHERE Empacador = @Empacador";
-                using (SQLiteCommand checkCmd = new SQLiteCommand(checkQuery, conn))
+                // Verificar si el nombre fue modificado
+                if (nuevoNombre != _nombreOriginal)
                 {
-                    checkCmd.Parameters.AddWithValue("@Empacador", empacador);
-                    int count = Convert.ToInt32(checkCmd.ExecuteScalar());
-
-                    if (count == 0) // Si no existe, INSERT
+                    // 1. Comprobar si el nuevo nombre ya existe
+                    string checkQuery = "SELECT COUNT(*) FROM HorarioEmpacadores WHERE Empacador = @NuevoNombre";
+                    using (SQLiteCommand checkCmd = new SQLiteCommand(checkQuery, conn))
                     {
-                        string insertQuery = "INSERT INTO HorarioEmpacadores (Empacador, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo) " +
-                                            "VALUES (@Empacador, @Lunes, @Martes, @Miercoles, @Jueves, @Viernes, @Sabado, @Domingo)";
-                        using (SQLiteCommand cmd = new SQLiteCommand(insertQuery, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@Empacador", empacador);
-                            cmd.Parameters.AddWithValue("@Lunes", dataGridView1.Rows[e.RowIndex].Cells["Lunes"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Martes", dataGridView1.Rows[e.RowIndex].Cells["Martes"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Miercoles", dataGridView1.Rows[e.RowIndex].Cells["Miercoles"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Jueves", dataGridView1.Rows[e.RowIndex].Cells["Jueves"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Viernes", dataGridView1.Rows[e.RowIndex].Cells["Viernes"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Sabado", dataGridView1.Rows[e.RowIndex].Cells["Sabado"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Domingo", dataGridView1.Rows[e.RowIndex].Cells["Domingo"].Value ?? "DESCANSO");
+                        checkCmd.Parameters.AddWithValue("@NuevoNombre", nuevoNombre);
+                        int count = Convert.ToInt32(checkCmd.ExecuteScalar());
 
-                            cmd.ExecuteNonQuery();
+                        if (count > 0)
+                        {
+                            MessageBox.Show("¡El nombre ya existe!");
+                            dataGridView1.Rows[e.RowIndex].Cells["Empacador"].Value = _nombreOriginal; // Revertir
+                            return;
                         }
                     }
-                    else // Si ya existe, UPDATE
+
+                    // 2. Actualizar el registro existente con el nuevo nombre
+                    string updateQuery = "UPDATE HorarioEmpacadores SET " +
+                                        "Empacador = @NuevoNombre, Lunes = @Lunes, Martes = @Martes, " +
+                                        "Miercoles = @Miercoles, Jueves = @Jueves, Viernes = @Viernes, " +
+                                        "Sabado = @Sabado, Domingo = @Domingo " +
+                                        "WHERE Empacador = @NombreOriginal";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(updateQuery, conn))
                     {
-                        string updateQuery = "UPDATE HorarioEmpacadores SET " +
-                                             "Lunes = @Lunes, Martes = @Martes, Miercoles = @Miercoles, Jueves = @Jueves, " +
-                                             "Viernes = @Viernes, Sabado = @Sabado, Domingo = @Domingo " +
-                                             "WHERE Empacador = @Empacador";
+                        cmd.Parameters.AddWithValue("@NuevoNombre", nuevoNombre);
+                        cmd.Parameters.AddWithValue("@NombreOriginal", _nombreOriginal);
+                        cmd.Parameters.AddWithValue("@Lunes", dataGridView1.Rows[e.RowIndex].Cells["Lunes"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Martes", dataGridView1.Rows[e.RowIndex].Cells["Martes"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Miercoles", dataGridView1.Rows[e.RowIndex].Cells["Miercoles"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Jueves", dataGridView1.Rows[e.RowIndex].Cells["Jueves"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Viernes", dataGridView1.Rows[e.RowIndex].Cells["Viernes"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Sabado", dataGridView1.Rows[e.RowIndex].Cells["Sabado"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Domingo", dataGridView1.Rows[e.RowIndex].Cells["Domingo"].Value ?? "DESCANSO");
 
-                        using (SQLiteCommand cmd = new SQLiteCommand(updateQuery, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@Empacador", empacador);
-                            cmd.Parameters.AddWithValue("@Lunes", dataGridView1.Rows[e.RowIndex].Cells["Lunes"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Martes", dataGridView1.Rows[e.RowIndex].Cells["Martes"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Miercoles", dataGridView1.Rows[e.RowIndex].Cells["Miercoles"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Jueves", dataGridView1.Rows[e.RowIndex].Cells["Jueves"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Viernes", dataGridView1.Rows[e.RowIndex].Cells["Viernes"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Sabado", dataGridView1.Rows[e.RowIndex].Cells["Sabado"].Value ?? "DESCANSO");
-                            cmd.Parameters.AddWithValue("@Domingo", dataGridView1.Rows[e.RowIndex].Cells["Domingo"].Value ?? "DESCANSO");
+                        cmd.ExecuteNonQuery();
+                    }
 
-                            cmd.ExecuteNonQuery();
-                        }
+                    _nombreOriginal = nuevoNombre; // Actualizar el nombre original
+                }
+                else
+                {
+                    // Si el nombre no cambió, solo actualizar los horarios
+                    string updateQuery = "UPDATE HorarioEmpacadores SET " +
+                                        "Lunes = @Lunes, Martes = @Martes, Miercoles = @Miercoles, " +
+                                        "Jueves = @Jueves, Viernes = @Viernes, Sabado = @Sabado, Domingo = @Domingo " +
+                                        "WHERE Empacador = @Empacador";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(updateQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Empacador", nuevoNombre);
+                        cmd.Parameters.AddWithValue("@Lunes", dataGridView1.Rows[e.RowIndex].Cells["Lunes"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Martes", dataGridView1.Rows[e.RowIndex].Cells["Martes"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Miercoles", dataGridView1.Rows[e.RowIndex].Cells["Miercoles"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Jueves", dataGridView1.Rows[e.RowIndex].Cells["Jueves"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Viernes", dataGridView1.Rows[e.RowIndex].Cells["Viernes"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Sabado", dataGridView1.Rows[e.RowIndex].Cells["Sabado"].Value ?? "DESCANSO");
+                        cmd.Parameters.AddWithValue("@Domingo", dataGridView1.Rows[e.RowIndex].Cells["Domingo"].Value ?? "DESCANSO");
+
+                        cmd.ExecuteNonQuery();
                     }
                 }
             }
-
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -385,15 +402,9 @@ namespace mandiles
 
         }
 
-        private void BtnRestaurar_Click(object sender, EventArgs e)
-        {
+      
 
-        }
-
-        private void clbAusencias_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
-        }
+        
 
         private void clbAusencias_ItemCheck(object sender, ItemCheckEventArgs e)
         {
@@ -424,6 +435,15 @@ namespace mandiles
                 clbAusencias.ItemCheck += clbAusencias_ItemCheck;
             }
 
+        }
+
+        private string _nombreOriginal;
+        private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && !dataGridView1.Rows[e.RowIndex].IsNewRow)
+            {
+                _nombreOriginal = dataGridView1.Rows[e.RowIndex].Cells["EMPACADOR"].Value?.ToString();
+            }
         }
     }
 
