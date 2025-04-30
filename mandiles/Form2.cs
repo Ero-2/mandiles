@@ -10,12 +10,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using ClosedXML.Excel;
+using System.IO;
+
 
 namespace mandiles
 {
     public partial class Form2 : Form
     {
-        private string connectionString = "Data Source=C:\\Users\\eroer\\Downloads\\horariosEmpacadores.db;Version=3;";
+        //private string connectionString = "Data Source=C:\\Users\\eroer\\Downloads\\horariosEmpacadores.db;Version=3;";
         private Empacadores EmpacadoresHorario;
         private Form1 form1;
 
@@ -26,7 +29,7 @@ namespace mandiles
             EmpacadoresHorario = new Empacadores();
             CargarDatos();
 
-            dataGridView1.RowValidated += dataGridView1_RowValidated;
+            
             dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
             dataGridView1.UserDeletingRow += dataGridView1_UserDeletingRow;
             clbAusencias.ItemCheck += clbAusencias_ItemCheck;
@@ -37,51 +40,93 @@ namespace mandiles
         {
             try
             {
-                using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+                // Ruta relativa: el archivo debe estar junto al .exe
+                string rutaExcel = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HorarioEmpacadores.xlsx");
+
+                var workbook = new XLWorkbook(rutaExcel);
+                var worksheet = workbook.Worksheet("HorarioEmpacadores");
+
+                EmpacadoresHorario = new Empacadores();
+
+                var dataTable = new System.Data.DataTable();
+                bool encabezadosLeidos = false;
+
+                foreach (var fila in worksheet.RowsUsed())
                 {
-                    conn.Open();
-
-                    // Cargar ListBox
-                    string query = "SELECT EMPACADOR FROM HorarioEmpacadores";
-                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    if (!encabezadosLeidos)
                     {
-                        
-                    }
-
-                    // Cargar Horarios en EmpacadoresHorario
-                    query = "SELECT Empacador, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo FROM HorarioEmpacadores";
-                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
+                        foreach (var celda in fila.Cells())
                         {
-                            string nombre = reader["Empacador"].ToString();
-                            EmpacadoresHorario.AsignarHorario(nombre, "LUNES", reader["Lunes"].ToString());
-                            EmpacadoresHorario.AsignarHorario(nombre, "MARTES", reader["Martes"].ToString());
-                            EmpacadoresHorario.AsignarHorario(nombre, "MIERCOLES", reader["Miercoles"].ToString());
-                            EmpacadoresHorario.AsignarHorario(nombre, "JUEVES", reader["Jueves"].ToString());
-                            EmpacadoresHorario.AsignarHorario(nombre, "VIERNES", reader["Viernes"].ToString());
-                            EmpacadoresHorario.AsignarHorario(nombre, "SABADO", reader["Sabado"].ToString());
-                            EmpacadoresHorario.AsignarHorario(nombre, "DOMINGO", reader["Domingo"].ToString());
+                            dataTable.Columns.Add(celda.GetString());
                         }
+                        encabezadosLeidos = true;
                     }
+                    else
+                    {
+                        var newRow = dataTable.NewRow();
+                        int colIndex = 0;
+                        string nombre = fila.Cell(1).GetString();
 
-                    // Cargar DataGridView
-                    query = "SELECT * FROM HorarioEmpacadores";
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, conn);
-                    System.Data.DataTable dt = new System.Data.DataTable();
-                    adapter.Fill(dt);
-                    dataGridView1.DataSource = dt;
+                        foreach (var celda in fila.Cells(1, 8))
+                        {
+                            newRow[colIndex++] = celda.GetString();
+                        }
+
+                        EmpacadoresHorario.AsignarHorario(nombre, "LUNES", fila.Cell(2).GetString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "MARTES", fila.Cell(3).GetString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "MIERCOLES", fila.Cell(4).GetString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "JUEVES", fila.Cell(5).GetString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "VIERNES", fila.Cell(6).GetString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "SABADO", fila.Cell(7).GetString());
+                        EmpacadoresHorario.AsignarHorario(nombre, "DOMINGO", fila.Cell(8).GetString());
+
+                        dataTable.Rows.Add(newRow);
+                    }
                 }
+
+                dataGridView1.DataSource = dataTable;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar los datos: " + ex.Message);
+                MessageBox.Show("Error al cargar los datos desde Excel: " + ex.Message);
             }
         }
 
-        
+        private void GuardarDatos()
+        {
+            try
+            {
+                // Mismo archivo Excel, junto al .exe
+                string rutaExcel = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HorarioEmpacadores.xlsx");
+
+                var workbook = new XLWorkbook();
+                var worksheet = workbook.Worksheets.Add("HorarioEmpacadores");
+
+                for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                {
+                    worksheet.Cell(1, i + 1).Value = dataGridView1.Columns[i].HeaderText;
+                }
+
+                for (int fila = 0; fila < dataGridView1.Rows.Count; fila++)
+                {
+                    for (int col = 0; col < dataGridView1.Columns.Count; col++)
+                    {
+                        var valor = dataGridView1.Rows[fila].Cells[col].Value;
+                        worksheet.Cell(fila + 2, col + 1).Value = valor != null ? valor.ToString() : "";
+                    }
+                }
+
+                workbook.SaveAs(rutaExcel);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar los datos en Excel: " + ex.Message);
+            }
+        }
+
+
+
+
 
         private void button1_Click_1(object sender, EventArgs e)
         {
@@ -205,125 +250,25 @@ namespace mandiles
             MostrarEmpacadoresDelDia();
         }
 
-        private void dataGridView1_RowValidated(object sender, DataGridViewCellEventArgs e)
-        {
-            if (dataGridView1.Rows[e.RowIndex].IsNewRow) return;
-
-            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
-            {
-                conn.Open();
-
-                string nuevoNombre = dataGridView1.Rows[e.RowIndex].Cells["Empacador"].Value?.ToString();
-                if (string.IsNullOrEmpty(nuevoNombre)) return;
-
-                // Verificar si el nombre fue modificado
-                if (nuevoNombre != _nombreOriginal)
-                {
-                    // 1. Comprobar si el nuevo nombre ya existe
-                    string checkQuery = "SELECT COUNT(*) FROM HorarioEmpacadores WHERE Empacador = @NuevoNombre";
-                    using (SQLiteCommand checkCmd = new SQLiteCommand(checkQuery, conn))
-                    {
-                        checkCmd.Parameters.AddWithValue("@NuevoNombre", nuevoNombre);
-                        int count = Convert.ToInt32(checkCmd.ExecuteScalar());
-
-                        if (count > 0)
-                        {
-                            MessageBox.Show("¡El nombre ya existe!");
-                            dataGridView1.Rows[e.RowIndex].Cells["Empacador"].Value = _nombreOriginal; // Revertir
-                            return;
-                        }
-                    }
-
-                    // 2. Actualizar el registro existente con el nuevo nombre
-                    string updateQuery = "UPDATE HorarioEmpacadores SET " +
-                                        "Empacador = @NuevoNombre, Lunes = @Lunes, Martes = @Martes, " +
-                                        "Miercoles = @Miercoles, Jueves = @Jueves, Viernes = @Viernes, " +
-                                        "Sabado = @Sabado, Domingo = @Domingo " +
-                                        "WHERE Empacador = @NombreOriginal";
-
-                    using (SQLiteCommand cmd = new SQLiteCommand(updateQuery, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@NuevoNombre", nuevoNombre);
-                        cmd.Parameters.AddWithValue("@NombreOriginal", _nombreOriginal);
-                        cmd.Parameters.AddWithValue("@Lunes", dataGridView1.Rows[e.RowIndex].Cells["Lunes"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Martes", dataGridView1.Rows[e.RowIndex].Cells["Martes"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Miercoles", dataGridView1.Rows[e.RowIndex].Cells["Miercoles"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Jueves", dataGridView1.Rows[e.RowIndex].Cells["Jueves"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Viernes", dataGridView1.Rows[e.RowIndex].Cells["Viernes"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Sabado", dataGridView1.Rows[e.RowIndex].Cells["Sabado"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Domingo", dataGridView1.Rows[e.RowIndex].Cells["Domingo"].Value ?? "DESCANSO");
-
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    _nombreOriginal = nuevoNombre; // Actualizar el nombre original
-                }
-                else
-                {
-                    // Si el nombre no cambió, solo actualizar los horarios
-                    string updateQuery = "UPDATE HorarioEmpacadores SET " +
-                                        "Lunes = @Lunes, Martes = @Martes, Miercoles = @Miercoles, " +
-                                        "Jueves = @Jueves, Viernes = @Viernes, Sabado = @Sabado, Domingo = @Domingo " +
-                                        "WHERE Empacador = @Empacador";
-
-                    using (SQLiteCommand cmd = new SQLiteCommand(updateQuery, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@Empacador", nuevoNombre);
-                        cmd.Parameters.AddWithValue("@Lunes", dataGridView1.Rows[e.RowIndex].Cells["Lunes"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Martes", dataGridView1.Rows[e.RowIndex].Cells["Martes"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Miercoles", dataGridView1.Rows[e.RowIndex].Cells["Miercoles"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Jueves", dataGridView1.Rows[e.RowIndex].Cells["Jueves"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Viernes", dataGridView1.Rows[e.RowIndex].Cells["Viernes"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Sabado", dataGridView1.Rows[e.RowIndex].Cells["Sabado"].Value ?? "DESCANSO");
-                        cmd.Parameters.AddWithValue("@Domingo", dataGridView1.Rows[e.RowIndex].Cells["Domingo"].Value ?? "DESCANSO");
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-            }
-        }
+       
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
-            {
-                conn.Open();
-                string query = "UPDATE HorarioEmpacadores SET " +
-                               dataGridView1.Columns[e.ColumnIndex].Name + " = @valor " +
-                               "WHERE Empacador = @Empacador";
 
-                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@valor", dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
-                    cmd.Parameters.AddWithValue("@Empacador", dataGridView1.Rows[e.RowIndex].Cells["Empacador"].Value);
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            GuardarDatos(); 
         }
 
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este registro?", "Confirmación", MessageBoxButtons.YesNo);
-            if (result == DialogResult.No)
+            DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar esta fila?", "Confirmar eliminación", MessageBoxButtons.YesNo);
+            if (result != DialogResult.Yes)
             {
                 e.Cancel = true;
                 return;
             }
-
-            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
-            {
-                conn.Open();
-                string query = "DELETE FROM HorarioEmpacadores WHERE Empacador = @Empacador";
-
-                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Empacador", e.Row.Cells["Empacador"].Value);
-                    cmd.ExecuteNonQuery();
-                }
-            }
         }
 
-        private void EliminarRegistro(string empacador)
+       /*private void EliminarRegistro(string empacador)
         {
             try
             {
@@ -358,10 +303,10 @@ namespace mandiles
             {
                 MessageBox.Show($"Error al eliminar el registro: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
+        }*/
 
 
-        private void button2_Click(object sender, EventArgs e)
+       /* private void button2_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)  // Verificar si hay una fila seleccionada
             {
@@ -384,7 +329,7 @@ namespace mandiles
                 MessageBox.Show("Por favor, selecciona un registro antes de eliminar.",
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-        }
+        }*/
 
       
 

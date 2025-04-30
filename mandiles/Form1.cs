@@ -23,15 +23,15 @@ namespace mandiles
     {
 
 
-
+        private List<string> empacadoresEnEspera = new List<string>();
         private Dictionary<string, Label> cajas = new Dictionary<string, Label>();
         private Dictionary<string, List<Label>> asignacionLabels = new Dictionary<string, List<Label>>();
         private Dictionary<Label, List<string>> asignaciones = new Dictionary<Label, List<string>>();
         private Dictionary<string, Caja> cajass = new Dictionary<string, Caja>();
         private Dictionary<string, List<string>> temporalClosureEmpacadores = new Dictionary<string, List<string>>();
 
-        private readonly string backupFile = "asignaciones_temp.dat";
-        private System.Windows.Forms.Timer timerBackup; // Eli
+       
+        
 
 
         public Form1()
@@ -116,11 +116,28 @@ namespace mandiles
 
             if (!openCajas.Any())
             {
-                RegistrarCambio("No hay cajas abiertas para reasignar empacadores.");
+                foreach (var emp in empacadores)
+                {
+                    if (!empacadoresEnEspera.Contains(emp))
+                    {
+                        empacadoresEnEspera.Add(emp);
+                        RegistrarCambio($"{emp} agregado a la lista de espera (no hay cajas disponibles)");
+                    }
+                }
+
+                MessageBox.Show(
+                    $"No hay cajas abiertas disponibles.\n" +
+                    $"Hay {empacadoresEnEspera.Count} empacadores en espera.\n" +
+                    "Favor de abrir una nueva caja para asignarlos.",
+                    "¡Atención!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return;
             }
 
-            foreach (var emp in empacadores)
+            // Asignamos por orden de menor carga
+            foreach (var emp in empacadores.ToList())
             {
                 foreach (var caja in openCajas)
                 {
@@ -128,12 +145,41 @@ namespace mandiles
                     {
                         caja.Empacadores.Add(emp);
                         caja.UpdateUI();
-
                         RegistrarCambio($"{emp} fue reasignado a {caja.Nombre}");
+                        empacadoresEnEspera.Remove(emp); // Elimina si estaba en espera
                         break;
                     }
                 }
             }
+        }
+
+        private void ProcesarListaDeEspera()
+        {
+            if (!empacadoresEnEspera.Any()) return;
+
+            var openCajas = cajass.Values
+                .Where(c => c.IsOpen && !c.IsOnBreak)
+                .OrderByDescending(c => c.Empacadores.Count == 0) // Priorizar vacías
+                .ThenBy(c => c.Empacadores.Count)
+                .ToList();
+
+            if (!openCajas.Any()) return;
+
+            foreach (var emp in empacadoresEnEspera.ToList())
+            {
+                foreach (var caja in openCajas)
+                {
+                    if (caja.Empacadores.Count < 3)
+                    {
+                        caja.Empacadores.Add(emp);
+                        caja.UpdateUI();
+                        empacadoresEnEspera.Remove(emp);
+                        RegistrarCambio($"{emp} asignado desde lista de espera a {caja.Nombre}");
+                        break;
+                    }
+                }
+            }
+
         }
 
 
@@ -393,6 +439,7 @@ namespace mandiles
             }
 
             BalancearEmpacadores();
+            ProcesarListaDeEspera();
 
         }
 
@@ -709,7 +756,21 @@ namespace mandiles
             RefrescarEmpacadoresAsignados(); // Actualizar la CheckedListBox en Form1
         }
 
-
+        private void RefrescarListaEspera()
+        {
+            if (LstEspera.InvokeRequired)
+            {
+                LstEspera.Invoke(new MethodInvoker(RefrescarListaEspera));
+            }
+            else
+            {
+                LstEspera.Items.Clear();
+                foreach (var emp in empacadoresEnEspera)
+                {
+                    LstEspera.Items.Add(emp);
+                }
+            }
+        }
     }
 
 

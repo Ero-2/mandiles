@@ -129,6 +129,7 @@
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.LstEspera = new System.Windows.Forms.ListBox();
             this.BarraTitulo.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -159,7 +160,7 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.label1.Location = new System.Drawing.Point(7, 2);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 30);
+            this.label1.Size = new System.Drawing.Size(129, 40);
             this.label1.TabIndex = 0;
             this.label1.Text = "MANDILES";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -167,7 +168,7 @@
             // caja1
             // 
             this.caja1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja1.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja1.Location = new System.Drawing.Point(34, 16);
             this.caja1.Name = "caja1";
             this.caja1.Size = new System.Drawing.Size(132, 22);
@@ -178,7 +179,7 @@
             // caja2
             // 
             this.caja2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja2.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja2.Location = new System.Drawing.Point(39, 12);
             this.caja2.Name = "caja2";
             this.caja2.Size = new System.Drawing.Size(122, 29);
@@ -189,7 +190,7 @@
             // caja3
             // 
             this.caja3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja3.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja3.Location = new System.Drawing.Point(39, 12);
             this.caja3.Name = "caja3";
             this.caja3.Size = new System.Drawing.Size(122, 29);
@@ -200,7 +201,7 @@
             // caja5
             // 
             this.caja5.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja5.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja5.Location = new System.Drawing.Point(41, 14);
             this.caja5.Name = "caja5";
             this.caja5.Size = new System.Drawing.Size(117, 26);
@@ -211,7 +212,7 @@
             // caja4
             // 
             this.caja4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja4.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja4.Location = new System.Drawing.Point(39, 12);
             this.caja4.Name = "caja4";
             this.caja4.Size = new System.Drawing.Size(122, 29);
@@ -222,7 +223,7 @@
             // caja6
             // 
             this.caja6.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja6.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja6.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja6.Location = new System.Drawing.Point(41, 14);
             this.caja6.Name = "caja6";
             this.caja6.Size = new System.Drawing.Size(117, 26);
@@ -233,7 +234,7 @@
             // caja8
             // 
             this.caja8.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja8.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja8.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja8.Location = new System.Drawing.Point(41, 14);
             this.caja8.Name = "caja8";
             this.caja8.Size = new System.Drawing.Size(117, 26);
@@ -244,7 +245,7 @@
             // caja9
             // 
             this.caja9.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja9.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja9.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja9.Location = new System.Drawing.Point(40, 15);
             this.caja9.Name = "caja9";
             this.caja9.Size = new System.Drawing.Size(131, 24);
@@ -255,7 +256,7 @@
             // caja10
             // 
             this.caja10.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja10.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja10.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja10.Location = new System.Drawing.Point(28, 15);
             this.caja10.Name = "caja10";
             this.caja10.Size = new System.Drawing.Size(143, 24);
@@ -266,7 +267,7 @@
             // caja7
             // 
             this.caja7.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja7.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja7.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja7.Location = new System.Drawing.Point(42, 14);
             this.caja7.Name = "caja7";
             this.caja7.Size = new System.Drawing.Size(116, 26);
@@ -277,7 +278,7 @@
             // caja13
             // 
             this.caja13.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja13.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja13.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja13.Location = new System.Drawing.Point(34, 13);
             this.caja13.Name = "caja13";
             this.caja13.Size = new System.Drawing.Size(143, 27);
@@ -288,7 +289,7 @@
             // caja12
             // 
             this.caja12.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja12.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja12.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja12.Location = new System.Drawing.Point(28, 15);
             this.caja12.Name = "caja12";
             this.caja12.Size = new System.Drawing.Size(143, 24);
@@ -299,7 +300,7 @@
             // caja11
             // 
             this.caja11.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja11.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja11.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja11.Location = new System.Drawing.Point(29, 15);
             this.caja11.Name = "caja11";
             this.caja11.Size = new System.Drawing.Size(141, 24);
@@ -310,7 +311,7 @@
             // caja14
             // 
             this.caja14.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja14.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja14.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja14.Location = new System.Drawing.Point(28, 13);
             this.caja14.Name = "caja14";
             this.caja14.Size = new System.Drawing.Size(143, 27);
@@ -321,7 +322,7 @@
             // caja15
             // 
             this.caja15.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.caja15.Font = new System.Drawing.Font("Akira Expanded", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caja15.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.caja15.Location = new System.Drawing.Point(28, 13);
             this.caja15.Name = "caja15";
             this.caja15.Size = new System.Drawing.Size(143, 27);
@@ -890,7 +891,7 @@
             this.button1.FlatAppearance.BorderColor = System.Drawing.Color.LightSlateGray;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Daydream", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.button1.Location = new System.Drawing.Point(30, 0);
             this.button1.Name = "button1";
@@ -906,7 +907,7 @@
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(7, 260);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(166, 23);
+            this.comboBox2.Size = new System.Drawing.Size(166, 26);
             this.comboBox2.TabIndex = 63;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
@@ -916,17 +917,17 @@
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Location = new System.Drawing.Point(7, 215);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(166, 23);
+            this.comboBox3.Size = new System.Drawing.Size(166, 26);
             this.comboBox3.TabIndex = 65;
             this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(19, 183);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(131, 32);
+            this.label2.Size = new System.Drawing.Size(128, 48);
             this.label2.TabIndex = 66;
             this.label2.Text = "   CIERRE \r\n TEMPORAL";
             // 
@@ -936,17 +937,17 @@
             this.comboBox4.FormattingEnabled = true;
             this.comboBox4.Location = new System.Drawing.Point(3, 157);
             this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(173, 23);
+            this.comboBox4.Size = new System.Drawing.Size(173, 26);
             this.comboBox4.TabIndex = 68;
             this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(19, 138);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(146, 16);
+            this.label3.Size = new System.Drawing.Size(149, 24);
             this.label3.TabIndex = 69;
             this.label3.Text = "FLOTAR CAJA";
             // 
@@ -957,17 +958,17 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(7, 104);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(166, 24);
+            this.comboBox1.Size = new System.Drawing.Size(166, 27);
             this.comboBox1.TabIndex = 1;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label62
             // 
             this.label62.AutoSize = true;
-            this.label62.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label62.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label62.Location = new System.Drawing.Point(19, 85);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(131, 16);
+            this.label62.Size = new System.Drawing.Size(99, 24);
             this.label62.TabIndex = 62;
             this.label62.Text = "Abrir caja";
             // 
@@ -991,7 +992,7 @@
             this.lbfecha.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lbfecha.Location = new System.Drawing.Point(366, 5);
             this.lbfecha.Name = "lbfecha";
-            this.lbfecha.Size = new System.Drawing.Size(95, 27);
+            this.lbfecha.Size = new System.Drawing.Size(118, 33);
             this.lbfecha.TabIndex = 5;
             this.lbfecha.Text = "lbFecha";
             // 
@@ -1006,7 +1007,7 @@
             this.lbHora.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.lbHora.Location = new System.Drawing.Point(824, 5);
             this.lbHora.Name = "lbHora";
-            this.lbHora.Size = new System.Drawing.Size(81, 27);
+            this.lbHora.Size = new System.Drawing.Size(102, 33);
             this.lbHora.TabIndex = 4;
             this.lbHora.Text = "lbHora";
             // 
@@ -1036,10 +1037,10 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(30, 284);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(120, 16);
+            this.label4.Size = new System.Drawing.Size(123, 24);
             this.label4.TabIndex = 90;
             this.label4.Text = "DESCANSO";
             // 
@@ -1048,7 +1049,7 @@
             this.comboBox5.FormattingEnabled = true;
             this.comboBox5.Location = new System.Drawing.Point(7, 303);
             this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(170, 21);
+            this.comboBox5.Size = new System.Drawing.Size(170, 24);
             this.comboBox5.TabIndex = 88;
             this.comboBox5.SelectedIndexChanged += new System.EventHandler(this.comboBox5_SelectedIndexChanged);
             // 
@@ -1056,7 +1057,7 @@
             // 
             this.panel3.Controls.Add(this.pictureBox2);
             this.panel3.Controls.Add(this.button1);
-            this.panel3.Location = new System.Drawing.Point(10, 344);
+            this.panel3.Location = new System.Drawing.Point(10, 333);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(166, 31);
             this.panel3.TabIndex = 89;
@@ -1064,7 +1065,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::mandiles.Properties.Resources.trabajo_en_equipo;
-            this.pictureBox2.Location = new System.Drawing.Point(2, 3);
+            this.pictureBox2.Location = new System.Drawing.Point(6, 0);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(25, 26);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1075,9 +1076,9 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(46, 379);
+            this.label5.Location = new System.Drawing.Point(44, 364);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(80, 16);
+            this.label5.Size = new System.Drawing.Size(109, 22);
             this.label5.TabIndex = 72;
             this.label5.Text = "Marcar salida:";
             // 
@@ -1085,9 +1086,9 @@
             // 
             this.clbEmpacadoresForm1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.clbEmpacadoresForm1.FormattingEnabled = true;
-            this.clbEmpacadoresForm1.Location = new System.Drawing.Point(15, 398);
+            this.clbEmpacadoresForm1.Location = new System.Drawing.Point(12, 397);
             this.clbEmpacadoresForm1.Name = "clbEmpacadoresForm1";
-            this.clbEmpacadoresForm1.Size = new System.Drawing.Size(166, 169);
+            this.clbEmpacadoresForm1.Size = new System.Drawing.Size(166, 157);
             this.clbEmpacadoresForm1.TabIndex = 71;
             this.clbEmpacadoresForm1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbEmpacadoresForm1_ItemCheck);
             // 
@@ -1104,10 +1105,10 @@
             // label63
             // 
             this.label63.AutoSize = true;
-            this.label63.Font = new System.Drawing.Font("Akira Expanded", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label63.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label63.Location = new System.Drawing.Point(12, 241);
             this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(153, 16);
+            this.label63.Size = new System.Drawing.Size(112, 24);
             this.label63.TabIndex = 64;
             this.label63.Text = "Cerrar caja";
             // 
@@ -1124,7 +1125,7 @@
             this.txtRegistroCambios.Multiline = true;
             this.txtRegistroCambios.Name = "txtRegistroCambios";
             this.txtRegistroCambios.ReadOnly = true;
-            this.txtRegistroCambios.Size = new System.Drawing.Size(274, 125);
+            this.txtRegistroCambios.Size = new System.Drawing.Size(174, 125);
             this.txtRegistroCambios.TabIndex = 72;
             // 
             // tableLayoutPanel2
@@ -1415,6 +1416,7 @@
             // panel2
             // 
             this.panel2.AutoScroll = true;
+            this.panel2.Controls.Add(this.LstEspera);
             this.panel2.Controls.Add(this.txtRegistroCambios);
             this.panel2.Controls.Add(this.tableLayoutPanel2);
             this.panel2.Controls.Add(this.tableLayoutPanel15);
@@ -1437,6 +1439,16 @@
             this.panel2.Size = new System.Drawing.Size(1080, 579);
             this.panel2.TabIndex = 88;
             this.panel2.Resize += new System.EventHandler(this.panel2_Resize);
+            // 
+            // LstEspera
+            // 
+            this.LstEspera.FormattingEnabled = true;
+            this.LstEspera.ItemHeight = 16;
+            this.LstEspera.Location = new System.Drawing.Point(948, 426);
+            this.LstEspera.Name = "LstEspera";
+            this.LstEspera.Size = new System.Drawing.Size(120, 132);
+            this.LstEspera.TabIndex = 88;
+            this.LstEspera.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // Form1
             // 
@@ -1578,6 +1590,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBox5;
         private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.ListBox LstEspera;
     }
 }
 
