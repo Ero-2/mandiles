@@ -9,10 +9,12 @@ namespace mandiles
     [Serializable]
     internal class EstadoAplicacion
     {
-        public Dictionary<string, List<string>> AsignacionesCajas { get; set; }
-        public Dictionary<string, bool> EstadosCajas { get; set; }
-        public Dictionary<string, bool> DescansosCajas { get; set; }
-        public List<string> CajasEnDescanso { get; set; }
-        public DateTime FechaHoraBackup { get; set; }
+        
+            public Dictionary<string, List<string>> Asignaciones { get; set; } = new Dictionary<string, List<string>>();
+            public Dictionary<string, bool> CajasAbiertas { get; set; } = new Dictionary<string, bool>();
+            public Dictionary<string, bool> CajasEnDescanso { get; set; } = new Dictionary<string, bool>();
+            public List<string> EmpacadoresEnEspera { get; set; } = new List<string>();
+            public Dictionary<string, List<string>> CierresTemporales { get; set; } = new Dictionary<string, List<string>>();
+        
     }
 }

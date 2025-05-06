@@ -46,8 +46,8 @@ namespace mandiles
                         }
                     }
                 }
-            }
-        }
+            }}
+        
         public Dictionary<string, Dictionary<string, string>> ObtenerHorario()
         {
             return horarioEmpacadores;

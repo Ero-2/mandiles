@@ -64,7 +64,7 @@
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Haettenschweiler", 21.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(580, 60);
+            this.label2.Location = new System.Drawing.Point(584, 60);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(246, 30);
             this.label2.TabIndex = 2;
@@ -84,10 +84,10 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.button1.BackColor = System.Drawing.Color.White;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Daydream", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.button1.Location = new System.Drawing.Point(3, 20);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(276, 44);
@@ -141,11 +141,12 @@
             this.clbAusencias.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clbAusencias.ForeColor = System.Drawing.SystemColors.InactiveBorder;
             this.clbAusencias.FormattingEnabled = true;
-            this.clbAusencias.Location = new System.Drawing.Point(3, 257);
+            this.clbAusencias.Location = new System.Drawing.Point(3, 247);
             this.clbAusencias.Name = "clbAusencias";
             this.clbAusencias.Size = new System.Drawing.Size(276, 154);
             this.clbAusencias.TabIndex = 9;
             this.clbAusencias.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbAusencias_ItemCheck);
+            this.clbAusencias.SelectedIndexChanged += new System.EventHandler(this.clbAusencias_SelectedIndexChanged);
             // 
             // dateTimePicker1
             // 
@@ -167,7 +168,6 @@
             this.button2.TabIndex = 11;
             this.button2.Text = "ELIMINAR REGISTRO";
             this.button2.UseVisualStyleBackColor = true;
-            
             // 
             // panel1
             // 

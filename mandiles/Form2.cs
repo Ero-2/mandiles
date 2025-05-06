@@ -27,13 +27,20 @@ namespace mandiles
             InitializeComponent();
             form1 = mainForm;
             EmpacadoresHorario = new Empacadores();
-            CargarDatos();
 
-            
+            // IMPORTANTE: Desuscribir primero para evitar suscripciones múltiples
+            dataGridView1.CellEndEdit -= dataGridView1_CellEndEdit;
+            dataGridView1.UserDeletingRow -= dataGridView1_UserDeletingRow;
+            clbAusencias.ItemCheck -= clbAusencias_ItemCheck;  // Desuscribir primero
+            dataGridView1.RowEnter -= dataGridView1_RowEnter;
+
+            // Ahora suscribir los eventos
             dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
             dataGridView1.UserDeletingRow += dataGridView1_UserDeletingRow;
-            clbAusencias.ItemCheck += clbAusencias_ItemCheck;
+            clbAusencias.ItemCheck += clbAusencias_ItemCheck;  // Suscribir una sola vez
             dataGridView1.RowEnter += dataGridView1_RowEnter;
+
+            CargarDatos();
         }
 
         private void CargarDatos()
@@ -347,39 +354,59 @@ namespace mandiles
 
         }
 
-      
 
-        
+
+
+
+        // Variable a nivel de clase para controlar el procesamiento
+        private bool procesandoCheck = false;
 
         private void clbAusencias_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if (e.NewValue == CheckState.Unchecked)
+            // Si ya estamos procesando, cancelamos esta llamada
+            if (procesandoCheck)
             {
-                string empacador = clbAusencias.Items[e.Index].ToString();
-
-                // Deshabilitamos temporalmente el evento para evitar múltiples ejecuciones
-                clbAusencias.ItemCheck -= clbAusencias_ItemCheck;
-
-                DialogResult respuesta = MessageBox.Show(
-                    $"¿Estás seguro de incluir a {empacador} en las asignaciones?",
-                    "Confirmar inclusión",
-                    MessageBoxButtons.YesNo);
-
-                if (respuesta == DialogResult.Yes)
-                {
-                    Form1 form1 = Application.OpenForms["Form1"] as Form1;
-                    form1?.AgregarEmpacadorACajasDisponibles(empacador);
-                }
-                else
-                {
-                    // Restauramos el estado a "Checked" sin disparar nuevamente el evento
-                    clbAusencias.SetItemCheckState(e.Index, CheckState.Checked);
-                }
-
-                // Rehabilitamos el evento
-                clbAusencias.ItemCheck += clbAusencias_ItemCheck;
+                e.NewValue = e.CurrentValue; // Mantener el valor actual
+                return;
             }
 
+            if (e.NewValue == CheckState.Unchecked)
+            {
+                try
+                {
+                    // Activamos la bandera
+                    procesandoCheck = true;
+
+                    // Suspendemos temporalmente la actualización de la interfaz
+                    clbAusencias.BeginUpdate();
+
+                    string empacador = clbAusencias.Items[e.Index].ToString();
+
+                    DialogResult respuesta = MessageBox.Show(
+                        $"¿Estás seguro de incluir a {empacador} en las asignaciones?",
+                        "Confirmar inclusión",
+                        MessageBoxButtons.YesNo);
+
+                    if (respuesta == DialogResult.Yes)
+                    {
+                        Form1 form1 = Application.OpenForms["Form1"] as Form1;
+                        form1?.AgregarEmpacadorACajasDisponibles(empacador);
+                    }
+                    else
+                    {
+                        // Cancelamos el cambio programáticamente
+                        e.NewValue = CheckState.Checked;
+                    }
+                }
+                finally
+                {
+                    // Reanudamos la actualización de la interfaz
+                    clbAusencias.EndUpdate();
+
+                    // IMPORTANTE: Siempre desactivamos la bandera, incluso si hay errores
+                    procesandoCheck = false;
+                }
+            }
         }
 
         private string _nombreOriginal;
@@ -389,6 +416,11 @@ namespace mandiles
             {
                 _nombreOriginal = dataGridView1.Rows[e.RowIndex].Cells["EMPACADOR"].Value?.ToString();
             }
+        }
+
+        private void clbAusencias_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 

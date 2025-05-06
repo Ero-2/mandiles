@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace mandiles
 {
@@ -24,6 +25,9 @@ namespace mandiles
             AsignacionLabels = asignacionLabels;
         }
 
+
+
+        // Actualiza los labels de asignación de acuerdo a la lista de empacadores
         // Actualiza los labels de asignación de acuerdo a la lista de empacadores
         public void UpdateUI()
         {
@@ -31,8 +35,39 @@ namespace mandiles
             {
                 if (i < Empacadores.Count)
                 {
-                    AsignacionLabels[i].Text = Empacadores[i];
-                    AsignacionLabels[i].Visible = true;
+                    string empacador = Empacadores[i];
+                    Label label = AsignacionLabels[i];
+
+                    // Guardar si ya estaba resaltado (por cualquier razón)
+                    bool estaResaltado = Form1.highlightedLabels.ContainsKey(label);
+
+                    // Actualizar texto del label
+                    label.Text = empacador;
+                    label.Visible = true;
+
+                    // Mantener resaltado si:
+                    // - Ya estaba resaltado
+                    // - O si el empacador fue recientemente reasignado (según Form1.previousAssignments)
+                    if (estaResaltado ||
+                        Form1.highlightedLabels.Values.Any(t => (DateTime.Now - t).TotalSeconds < 60 &&
+                                                              Form1.highlightedLabels.Keys.Any(l => l.Text == empacador)))
+                    {
+                        label.ForeColor = Color.Purple;
+                        label.BorderStyle = BorderStyle.Fixed3D;
+                        if (!Form1.highlightedLabels.ContainsKey(label))
+                        {
+                            Form1.highlightedLabels[label] = DateTime.Now; // Registrar para el temporizador
+                        }
+                    }
+                    else
+                    {
+                        label.ForeColor = SystemColors.ControlText;
+                        label.BorderStyle = BorderStyle.None;
+                        if (Form1.highlightedLabels.ContainsKey(label))
+                        {
+                            Form1.highlightedLabels.Remove(label);
+                        }
+                    }
                 }
                 else
                 {

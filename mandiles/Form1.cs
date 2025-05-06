@@ -29,19 +29,205 @@ namespace mandiles
         private Dictionary<Label, List<string>> asignaciones = new Dictionary<Label, List<string>>();
         private Dictionary<string, Caja> cajass = new Dictionary<string, Caja>();
         private Dictionary<string, List<string>> temporalClosureEmpacadores = new Dictionary<string, List<string>>();
+        public static Dictionary<Label, DateTime> highlightedLabels = new Dictionary<Label, DateTime>();
+        private System.Windows.Forms.Timer highlightTimer;
+        private Dictionary<string, List<string>> previousAssignments = new Dictionary<string, List<string>>();
+        private Dictionary<string, string> empacadorCajaAnterior = new Dictionary<string, string>();
+        private Stack<StateSnapshot> undoHistory = new Stack<StateSnapshot>();
 
-       
-        
+
 
 
         public Form1()
         {
             InitializeComponent();
             InicializarDiccionarios();
-            InicializarComboBox(); 
-             // <-- Añade esta línea
-           
+            InicializarComboBox();
+
+            highlightTimer = new System.Windows.Forms.Timer();
+            highlightTimer.Interval = 1000; // Verificar cada segundo
+            highlightTimer.Tick += HighlightTimer_Tick;
+            highlightTimer.Start(); // ¡Asegúrate de que esto no esté comentado!
+
         }
+
+        public class StateSnapshot
+        {
+            public Dictionary<string, CajaState> Cajas { get; set; } = new Dictionary<string, CajaState>();
+            public List<string> EmpacadoresEnEspera { get; set; } = new List<string>();
+        }
+
+        public class CajaState
+        {
+            public bool IsOpen { get; set; }
+            public bool IsOnBreak { get; set; }
+            public List<string> Empacadores { get; set; } = new List<string>();
+        }
+
+        private void SaveCurrentStateToUndoStack()
+        {
+            var snapshot = new StateSnapshot
+            {
+                EmpacadoresEnEspera = new List<string>(empacadoresEnEspera)
+            };
+
+            foreach (var cajaKvp in cajass)
+            {
+                var caja = cajaKvp.Value;
+                snapshot.Cajas[caja.Nombre] = new CajaState
+                {
+                    IsOpen = caja.IsOpen,
+                    IsOnBreak = caja.IsOnBreak,
+                    Empacadores = new List<string>(caja.Empacadores)
+                };
+            }
+
+            undoHistory.Push(snapshot);
+        }
+
+        private void UndoLastOperation()
+        {
+            if (undoHistory.Count == 0)
+            {
+                MessageBox.Show("No hay operaciones anteriores para deshacer.");
+                return;
+            }
+
+            var lastState = undoHistory.Pop();
+
+            // Restaurar empacadores en espera
+            empacadoresEnEspera.Clear();
+            empacadoresEnEspera.AddRange(lastState.EmpacadoresEnEspera);
+
+            // Restaurar estado de las cajas
+            foreach (var cajaKvp in cajass)
+            {
+                string nombreCaja = cajaKvp.Key;
+                Caja caja = cajaKvp.Value;
+
+                if (lastState.Cajas.TryGetValue(nombreCaja, out var state))
+                {
+                    caja.IsOpen = state.IsOpen;
+                    caja.IsOnBreak = state.IsOnBreak;
+                    caja.Empacadores.Clear();
+                    caja.Empacadores.AddRange(state.Empacadores);
+                    caja.UpdateUI();
+
+                    // Actualizar color visual de la caja según su estado
+                    if (caja.IsOpen && !caja.IsOnBreak)
+                        caja.MainLabel.BackColor = Color.Green;
+                    else if (caja.IsOpen && caja.IsOnBreak)
+                        caja.MainLabel.BackColor = Color.Pink;
+                    else if (!caja.IsOpen)
+                        caja.MainLabel.BackColor = Color.Transparent;
+                }
+            }
+
+            // Refrescar interfaz
+            RefrescarListaEspera();
+            RefrescarEmpacadoresAsignados();
+            InicializarComboBox(); // Re-inicializar comboboxes si es necesario
+
+            MessageBox.Show("Operación revertida. Se ha restaurado el estado anterior.");
+        }
+
+        private void HighlightTimer_Tick(object sender, EventArgs e)
+        {
+            var labelsToRemove = new List<Label>();
+            foreach (var kvp in highlightedLabels)
+            {
+                if ((DateTime.Now - kvp.Value).TotalSeconds >= 60)
+                {
+                    kvp.Key.ForeColor = SystemColors.ControlText;
+                    kvp.Key.BorderStyle = BorderStyle.None;
+                    labelsToRemove.Add(kvp.Key);
+                }
+            }
+            foreach (var label in labelsToRemove)
+            {
+                highlightedLabels.Remove(label);
+            }
+        }
+
+        private void ResaltarReasignacionesExclusivas()
+        {
+            // 1. Limpiar resaltados anteriores
+            foreach (var label in highlightedLabels.Keys.ToList())
+            {
+                label.ForeColor = SystemColors.ControlText;
+                label.BorderStyle = BorderStyle.None;
+                highlightedLabels.Remove(label);
+            }
+
+            // 2. Identificar cambios entre asignaciones anteriores y actuales
+            var cambios = new Dictionary<string, string>(); // { Empacador, NuevaCaja }
+            foreach (var cajaActual in cajass)
+            {
+                foreach (var empacador in cajaActual.Value.Empacadores)
+                {
+                    if (previousAssignments.TryGetValue(cajaActual.Key, out var empacadoresAnteriores))
+                    {
+                        if (!empacadoresAnteriores.Contains(empacador))
+                        {
+                            cambios[empacador] = cajaActual.Key; // Empacador reasignado
+                        }
+                    }
+                }
+            }
+
+            // 3. Pintar los labels de los empacadores reasignados
+            foreach (var cambio in cambios)
+            {
+                string empacador = cambio.Key;
+                string cajaDestino = cambio.Value;
+
+                if (asignacionLabels.TryGetValue(cajaDestino, out var labelsCaja))
+                {
+                    foreach (var label in labelsCaja)
+                    {
+                        if (label.Text == empacador)
+                        {
+                            label.ForeColor = Color.Purple;  // Color para reasignados
+                            label.BorderStyle = BorderStyle.Fixed3D;
+                            highlightedLabels[label] = DateTime.Now; // Registrar para el temporizador
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // 4. Actualizar asignaciones anteriores para futuras comparaciones
+            foreach (var cajaKvp in cajass)
+            {
+                previousAssignments[cajaKvp.Key] = new List<string>(cajaKvp.Value.Empacadores);
+            }
+        }
+
+
+        private void ResaltarLabel(Label label)
+        {
+            if (label == null) return;
+
+            if (label.InvokeRequired)
+            {
+                label.Invoke(new Action(() => ResaltarLabel(label)));
+                return;
+            }
+
+            // Forzar la actualización visual del label
+            label.ForeColor = Color.Purple;
+            label.BorderStyle = BorderStyle.Fixed3D;
+            label.Refresh(); // Forzar repintado inmediato
+
+            // Registrar en el diccionario de labels resaltados
+            Form1.highlightedLabels[label] = DateTime.Now;
+
+            // Registrar en el log para depuración
+            Console.WriteLine($"Label resaltado: {label.Text} a las {DateTime.Now}");
+            RegistrarCambio($"Empacador {label.Text} fue reasignado y resaltado");
+        }
+
+
         private void InicializarDiccionarios()
         {
             for (int i = 1; i <= 15; i++)
@@ -57,6 +243,11 @@ namespace mandiles
                 };
                 cajass[cajaName] = new Caja(cajaName, cajaLabel, asignacionLabels[cajaName]);
 
+            }
+
+            foreach (var cajaKvp in cajass)
+            {
+                previousAssignments[cajaKvp.Key] = new List<string>(cajaKvp.Value.Empacadores);
             }
         }
 
@@ -84,12 +275,36 @@ namespace mandiles
                 cajas[cajaName].BackColor = color;
         }
 
+        private void ClearHighlightsForEmpacador(string empacador)
+        {
+            var labelsToRemove = Form1.highlightedLabels.Keys
+                .Where(label => label.Text == empacador)
+                .ToList();
+
+            foreach (var label in labelsToRemove)
+            {
+                label.ForeColor = SystemColors.ControlText;
+                label.BorderStyle = BorderStyle.None;
+                Form1.highlightedLabels.Remove(label);
+            }
+        }
+
+
+
 
 
         private void CloseCaja(string nombreCaja)
         {
+            SaveCurrentStateToUndoStack();
+
             if (!cajass.ContainsKey(nombreCaja)) return;
             Caja cajaCerrada = cajass[nombreCaja];
+
+            // Save current state before closing the box
+            var oldPreviousAssignments = previousAssignments.ToDictionary(
+                kvp => kvp.Key,
+                kvp => new List<string>(kvp.Value)
+            );
 
             // Tomamos los empacadores de la caja y los quitamos de ahí
             List<string> empacadoresAReasignar = new List<string>(cajaCerrada.Empacadores);
@@ -100,19 +315,39 @@ namespace mandiles
             cajaCerrada.MainLabel.BackColor = Color.Transparent;
             cajaCerrada.UpdateUI();
 
-
-
             RegistrarCambio($"La {nombreCaja} fue cerrada. Empacadores reasignados: {string.Join(", ", empacadoresAReasignar)}");
+
+            // Restore the previous assignments before reassignment
+            previousAssignments = oldPreviousAssignments;
 
             // REASIGNAMOS
             ReasignarEmpacadores(empacadoresAReasignar);
             BalancearEmpacadores();
+            ResaltarReasignacionesExclusivas();
+            RefrescarListaEspera();
+            // La llamada a CheckAndHighlightReassignments se hace dentro de ReasignarEmpacadores
         }
+
 
 
         private void ReasignarEmpacadores(List<string> empacadores)
         {
-            var openCajas = cajass.Values.Where(c => c.IsOpen && !c.IsOnBreak).OrderBy(c => c.Empacadores.Count).ToList();
+            if (empacadores == null || !empacadores.Any()) return;
+
+            // Guardar asignaciones previas
+            var empacadorCajaAnterior = new Dictionary<string, string>();
+            foreach (var kvp in cajass)
+            {
+                foreach (var emp in kvp.Value.Empacadores)
+                {
+                    empacadorCajaAnterior[emp] = kvp.Key;
+                }
+            }
+
+            var openCajas = cajass.Values
+                .Where(c => c.IsOpen && !c.IsOnBreak)
+                .OrderBy(c => c.Empacadores.Count)
+                .ToList();
 
             if (!openCajas.Any())
             {
@@ -126,32 +361,131 @@ namespace mandiles
                 }
 
                 MessageBox.Show(
-                    $"No hay cajas abiertas disponibles.\n" +
-                    $"Hay {empacadoresEnEspera.Count} empacadores en espera.\n" +
+                    $"No hay cajas abiertas disponibles.\r\n" +
+                    $"Hay {empacadoresEnEspera.Count} empacadores en espera.\r\n" +
                     "Favor de abrir una nueva caja para asignarlos.",
                     "¡Atención!",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
+                RefrescarListaEspera();
                 return;
             }
 
-            // Asignamos por orden de menor carga
+            // Limpiar resaltados anteriores
             foreach (var emp in empacadores.ToList())
             {
-                foreach (var caja in openCajas)
+                ClearHighlightsForEmpacador(emp);
+
+                bool asignado = false;
+                var cajasOrdenadas = openCajas
+                    .Where(c => c.Empacadores.Count < 3)
+                    .OrderBy(c => c.Empacadores.Count)
+                    .ToList();
+
+                foreach (var caja in cajasOrdenadas)
                 {
-                    if (caja.Empacadores.Count < 3)
+                    if (caja.Empacadores.Count < 3 && !caja.Empacadores.Contains(emp))
                     {
                         caja.Empacadores.Add(emp);
-                        caja.UpdateUI();
+                        caja.UpdateUI(); // Primero actualiza visual
+
                         RegistrarCambio($"{emp} fue reasignado a {caja.Nombre}");
-                        empacadoresEnEspera.Remove(emp); // Elimina si estaba en espera
+                        empacadoresEnEspera.Remove(emp);
+                        asignado = true;
+
+                        // Si el empacador fue reasignado a una caja distinta, resaltar
+                        if (empacadorCajaAnterior.TryGetValue(emp, out string cajaAnterior))
+                        {
+                            if (cajaAnterior != caja.Nombre)
+                            {
+                                // Buscar la posición correcta del empacador en la lista de labels
+                                int empIndex = caja.Empacadores.IndexOf(emp);
+                                if (empIndex >= 0 && empIndex < caja.AsignacionLabels.Count)
+                                {
+                                    Label labelToHighlight = caja.AsignacionLabels[empIndex];
+                                    Console.WriteLine($"Resaltando durante reasignación: {emp} en {caja.Nombre}");
+                                    ResaltarLabel(labelToHighlight);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // Si es nuevo, también resaltar
+                            foreach (var label in caja.AsignacionLabels)
+                            {
+                                if (string.IsNullOrEmpty(label.Text))
+                                {
+                                    label.Text = emp;
+                                    ResaltarLabel(label); // Resalta el label asignado
+                                    break;
+                                }
+                            }
+                        }
+
                         break;
                     }
                 }
+
+                if (!asignado && !empacadoresEnEspera.Contains(emp))
+                {
+                    empacadoresEnEspera.Add(emp);
+                    RegistrarCambio($"{emp} agregado a la lista de espera (cajas llenas)");
+                }
+            }
+
+            RefrescarListaEspera();
+            ResaltarReasignacionesExclusivas();
+        }
+
+
+        private void CheckAndHighlightReassignments()
+        {
+            // Diccionario actual después de reasignar
+            Dictionary<string, string> empacadorCajaActual = new Dictionary<string, string>();
+
+            foreach (var caja in cajass.Values)
+            {
+                foreach (var emp in caja.Empacadores)
+                {
+                    empacadorCajaActual[emp] = caja.Nombre;
+                }
+            }
+
+            foreach (var empacador in empacadorCajaActual.Keys)
+            {
+                // Verifica si estaba antes y cambió de caja
+                if (empacadorCajaAnterior.ContainsKey(empacador) &&
+                    empacadorCajaAnterior[empacador] != empacadorCajaActual[empacador])
+                {
+                    // Obtener la caja actual donde está el empacador
+                    string cajaNueva = empacadorCajaActual[empacador];
+
+                    // Buscar el label correspondiente para resaltarlo
+                    if (cajass.ContainsKey(cajaNueva))
+                    {
+                        Caja cajaObj = cajass[cajaNueva];
+                        foreach (var label in cajaObj.AsignacionLabels)
+                        {
+                            if (label.Text == empacador)
+                            {
+                                Console.WriteLine($"Resaltando: {empacador} en {cajaNueva}");
+                                ResaltarLabel(label);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Actualiza el diccionario de asignaciones anteriores para la próxima comparación
+            empacadorCajaAnterior.Clear();
+            foreach (var empacador in empacadorCajaActual.Keys)
+            {
+                empacadorCajaAnterior[empacador] = empacadorCajaActual[empacador];
             }
         }
+
 
         private void ProcesarListaDeEspera()
         {
@@ -165,7 +499,10 @@ namespace mandiles
 
             if (!openCajas.Any()) return;
 
-            foreach (var emp in empacadoresEnEspera.ToList())
+            // Crear una lista para no modificar mientras iteramos
+            var empacadoresAAsignar = new List<string>(empacadoresEnEspera);
+
+            foreach (var emp in empacadoresAAsignar)
             {
                 foreach (var caja in openCajas)
                 {
@@ -180,6 +517,9 @@ namespace mandiles
                 }
             }
 
+            // Actualizar la UI después de procesar
+            RefrescarListaEspera();
+            CheckAndHighlightReassignments();
         }
 
 
@@ -269,12 +609,15 @@ namespace mandiles
 
         private void AgregarAEmpacadoresEspera(List<string> empacadores)
         {
-            // Lista de espera (puedes implementarla como un List o cualquier otra estructura)
             foreach (var empacador in empacadores)
             {
-                // Agregar a la lista de espera (no se hace nada visualmente en este caso)
-                Console.WriteLine($"Empacador {empacador} en lista de espera.");
+                if (!empacadoresEnEspera.Contains(empacador))
+                {
+                    empacadoresEnEspera.Add(empacador);
+                    RegistrarCambio($"{empacador} agregado a la lista de espera");
+                }
             }
+            RefrescarListaEspera();
         }
 
 
@@ -345,6 +688,9 @@ namespace mandiles
                 }
                 caja.UpdateUI();
             }
+
+            ResaltarReasignacionesExclusivas();
+            CheckAndHighlightReassignments();
         }
 
         private void RefrescarEmpacadoresAsignados()
@@ -366,6 +712,8 @@ namespace mandiles
 
             if (!cajass.ContainsKey(cajaReabierta)) return;
             Caja caja = cajass[cajaReabierta];
+
+            SaveCurrentStateToUndoStack();
 
             // Determinar si estaba en descanso antes de reabrir
             bool estabaEnDescanso = caja.IsOnBreak;
@@ -438,11 +786,14 @@ namespace mandiles
                 }
             }
 
-            BalancearEmpacadores();
+            // Primero procesar la lista de espera y luego balancear
             ProcesarListaDeEspera();
+            BalancearEmpacadores();
+            RefrescarListaEspera();
+            ResaltarReasignacionesExclusivas();
+           
 
         }
-
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox2.SelectedItem == null) return;
@@ -450,6 +801,8 @@ namespace mandiles
             CambiarColorCaja(selectedCaja, Color.Transparent);
             MoverCaja(comboBox2, comboBox1, selectedCaja);
             CloseCaja(selectedCaja);
+            RefrescarListaEspera();
+           
         }
 
 
@@ -466,7 +819,12 @@ namespace mandiles
 
             Caja cajaCierre = cajass[selectedCaja];
 
-
+            // Verificar si la caja está abierta
+            if (!cajaCierre.IsOpen)
+            {
+                MessageBox.Show("La caja seleccionada ya está cerrada.");
+                return;
+            }
 
             // Preguntamos si el cierre será mayor a 45 minutos
             var resultt = MessageBox.Show("¿El cierre será mayor a 45 minutos?",
@@ -478,7 +836,6 @@ namespace mandiles
             CambiarColorCaja(selectedCaja, Color.Orange);
 
             // 2) Guardamos los empacadores que tenía en un diccionario
-            //    (así sabemos quiénes eran los 'originales' de esta caja)
             if (!temporalClosureEmpacadores.ContainsKey(selectedCaja))
                 temporalClosureEmpacadores[selectedCaja] = new List<string>();
 
@@ -501,7 +858,7 @@ namespace mandiles
                 AgregarAEmpacadoresEspera(temporalClosureEmpacadores[selectedCaja]);
             }
 
-            // Mover la caja al comboBox correspondiente si quieres (opcional)
+            // Mover la caja al comboBox correspondiente
             MoverCaja(comboBox3, comboBox1, selectedCaja);
 
             RegistrarCambio($"{DateTime.Now:HH:mm:ss} - La caja {selectedCaja} fue cerrada temporalmente.");
@@ -509,6 +866,10 @@ namespace mandiles
             {
                 RegistrarCambio($"{DateTime.Now:HH:mm:ss} - El empacador {emp} fue reasignado debido al cierre temporal de la caja {selectedCaja}.");
             }
+
+            // Actualizar la UI
+            RefrescarListaEspera();
+            CheckAndHighlightReassignments();
         }
 
         public List<Label> ObtenerCajasAbiertas()
@@ -634,7 +995,10 @@ namespace mandiles
                 cajaAbierta.UpdateUI();
                 cajaFlotadaObj.UpdateUI();
 
-                // 10. Mover la caja original al ComboBox1
+                // 10. Llamar al método para resaltar reasignaciones
+                ResaltarReasignacionesExclusivas(); // ✅ Llamada al método
+
+                // 11. Mover la caja original al ComboBox1
                 MoverCaja(comboBox4, comboBox1, selectedCaja);
 
                 RegistrarCambio($"{DateTime.Now:HH:mm:ss} - La caja {selectedCaja} fue flotada a la caja {cajaFlotada}.");
@@ -643,8 +1007,6 @@ namespace mandiles
                     RegistrarCambio($"{DateTime.Now:HH:mm:ss} - El empacador {emp} fue trasladado de {selectedCaja} a {cajaFlotada}.");
                 }
             }
-
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -722,6 +1084,8 @@ namespace mandiles
 
             if (caja.IsOpen && !caja.IsOnBreak)
             {
+                SaveCurrentStateToUndoStack();
+
                 // 1. Marcar como en descanso
                 caja.IsOnBreak = true;
                 caja.MainLabel.BackColor = Color.Pink;
@@ -770,6 +1134,11 @@ namespace mandiles
                     LstEspera.Items.Add(emp);
                 }
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            UndoLastOperation();
         }
     }
 
